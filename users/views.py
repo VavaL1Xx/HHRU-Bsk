@@ -35,6 +35,11 @@ def login_view(request):
         form = LoginForm()
     return render(request, 'users/login.html', {'form': form})
 
+
+def profile_view(request):
+    return render(request, 'users/profile.html')
+
+
 def logout_view(request):
     logout(request)
     return redirect('/')

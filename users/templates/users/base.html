@@ -10,13 +10,13 @@
 </head>
 <body>
     <header class="header">
-        <div class="container">
+        <div class="container" style="margin-bottom: 0;margin-top: 0;padding-top: 0;padding-bottom: 0;">
             <nav>
                 <ul class="nav-links">
                     <li><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
                     {% if user.is_authenticated %}
                     <li>
-                        <a class="nav-link" href="#">Вы вошли под именем {{ user.username }}</a>
+                        <a class="nav-link" href="{% url 'profile' %}">Вы вошли под именем {{ user.username }}</a>
                     </li>
                     {% endif %}
                     <li>
@@ -32,19 +32,12 @@
     </header>
     
     <main>
-        <div class="container">
         {% block content %}
         {% endblock %}
-        </div>
     </main>
     
-    <footer class="footer">
-        <div class="container">
-            <div class="bottom-info">
-                <p с>&copy; 2024 Все права защищены!</p>
-                <p>HHRU Башкортостан</p>
-            </div>
-        </div>
-    </footer>
+    <div class="footer">
+        &copy; 2024 HeadHunter. Все права защищены.
+    </div>
 </body>
 </html>

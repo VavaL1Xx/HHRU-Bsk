@@ -1,10 +1,10 @@
 {% extends 'users/base.html' %}
 
-{% block title %}Регистрация{% endblock %}
+{% block title %}HeadHunter | Регистрация{% endblock %}
 
 {% block content %}
     <div class="register">
-        <div class="register-content">
+        <div class="register-content" style="text-align:center;">
             <h2>Регистрация</h2>
             <form method="POST">
                 {% csrf_token %}
@@ -14,4 +14,13 @@
             <a href="{% url 'login' %}">Уже есть аккаунт? Войти</a>
         </div>
     </div>
+    <script>
+        fr1 = document.getElementById("id_username");
+        fr1.placeholder = "Логин";
+        fr2 = document.getElementById("id_password");
+        fr2.placeholder = "Пароль";
+        fr3 = document.getElementById("id_email");
+        fr3.placeholder = "Email";
+        err = document.getElementByClass("errorlist")
+    </script>
 {% endblock %}
