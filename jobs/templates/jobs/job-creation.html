@@ -3,10 +3,24 @@
 {% block title %}Разместить вакансию{% endblock %}
 
 {% block content %}
+<div class="vacancy-creation">
+    <div class="vacancy-creation-content" style="text-align:center;">
     <h2>Создать вакансию</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Создать</button>
     </form>
+    </div>
+</div>
+<script>
+    fr1 = document.getElementById("id_title");
+    fr1.placeholder = "Наименование";
+    fr2 = document.getElementById("id_description");
+    fr2.placeholder = "Описание";
+    fr3 = document.getElementById("id_location");
+    fr3.placeholder = "Место";
+    fr4 = document.getElementById("id_salary");
+    fr4.placeholder = "Зарплата";
+</script>
 {% endblock %}

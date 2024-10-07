@@ -65,7 +65,7 @@ def login_view(request):
 
 
 def profile_view(request):
-    return redirect ('profile')
+    return render(request, 'users/profile.html')
 
 def logout_view(request):
     logout(request)

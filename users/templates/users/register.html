@@ -5,21 +5,25 @@
 {% block content %}
     <div class="register">
         <div class="register-content" style="text-align:center;">
-            <h2>Регистрация</h2>
+            <h2 class="title">Регистрация</h2>
+            <a class="advice" href="#">Есть аккаунт?</a>
             <form method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit">Зарегистрироваться</button>
+                <button type="submit" id="btn-register">Зарегистрироваться</button>
             </form>
         </div>
     </div>
     <script>
         fr1 = document.getElementById("id_username");
         fr1.placeholder = "Логин";
-        fr2 = document.getElementById("id_password");
+        fr2 = document.getElementById("id_password1");
         fr2.placeholder = "Пароль";
+        fr4 = document.getElementById("id_password2");
+        fr4.placeholder = "Подтвердите пароль";
         fr3 = document.getElementById("id_email");
-        fr3.placeholder = "Email";
-        err = document.getElementByClass("errorlist")
+        fr3.placeholder = "Почта";
+        fr5 = document.getElementById("id_company_name");
+        fr5.placeholder = "Наименование компании";
     </script>
 {% endblock %}
