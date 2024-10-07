@@ -1,48 +1,72 @@
-from django.shortcuts import render
-from django.shortcuts import render
+# Create your views here.
 
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from .forms import RegisterForm, LoginForm
-from django.contrib.auth.models import User
-from django.contrib import messages
 
-def register_view(request):
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import AuthenticationForm
+
+from .forms import EmployerSignUpForm, JobSeekerSignUpForm
+from jobs.models import Job
+
+def employer_signup(request):
+
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = EmployerSignUpForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.save()
+            user = form.save()
             login(request, user)
-            return redirect('/')
+            jobs = Job.objects.all()
+            return render(request, 'users/home.html', {'jobs': jobs})
     else:
-        form = RegisterForm()
+        form = EmployerSignUpForm()
     return render(request, 'users/register.html', {'form': form})
 
-def login_view(request):
+
+def job_seeker_signup(request):
+
+    if request.user.is_authenticated:
+        return redirect('home')
+    
     if request.method == 'POST':
-        form = LoginForm(request, data=request.POST)
+        form = JobSeekerSignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            jobs = Job.objects.all()
+            return render(request, 'users/home.html', {'jobs': jobs})
+    else:
+        form = JobSeekerSignUpForm()
+    return render(request, 'users/register.html', {'form': form})
+
+
+def login_view(request):
+
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('/')
+                jobs = Job.objects.all()
+                return render(request, 'users/home.html', {'jobs': jobs})
             else:
-                messages.error(request, "Неверное имя пользователя или пароль")
+                form.add_error(None, 'Неверное имя пользователя или пароль.')
     else:
-        form = LoginForm()
+        form = AuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
 
 
 def profile_view(request):
-    return render(request, 'users/profile.html')
-
+    return redirect ('profile')
 
 def logout_view(request):
     logout(request)
     return redirect('/')
-
-def home_view(request):
-    return render(request, 'users/home.html')

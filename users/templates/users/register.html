@@ -1,6 +1,6 @@
 {% extends 'users/base.html' %}
 
-{% block title %}HeadHunter | Регистрация{% endblock %}
+{% block title %}Регистрация профиля{% endblock %}
 
 {% block content %}
     <div class="register">
@@ -11,7 +11,6 @@
                 {{ form.as_p }}
                 <button type="submit">Зарегистрироваться</button>
             </form>
-            <a href="{% url 'login' %}">Уже есть аккаунт? Войти</a>
         </div>
     </div>
     <script>

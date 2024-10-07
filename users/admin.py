@@ -1,14 +1,59 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-class CustomUserAdmin(BaseUserAdmin):
-    list_display = ('username', 'email', 'password', 'is_staff', 'is_active')
+# Register your models here.
 
-    fieldsets = (
-        (None, {'fields': ('username', 'email', 'password')}),
-        ('Permissions', {'fields': ('is_staff', 'is_active')}),
-    )
+from users.models import Employer, JobSeeker
 
-admin.site.unregister(User)
-admin.site.register(User, CustomUserAdmin)
+class EmployerAdmin(admin.ModelAdmin):
+    list_display = [
+        'company_name',
+        'user_username',
+        'user_email',
+        'date',
+    ]
+    
+    def date(self, obj):
+        if isinstance(obj.user.date_of_registration, str):
+            return obj.user.date_of_registration
+        elif obj.user.date_of_registration:
+            return obj.user.date_of_registration.strftime('%Y-%m-%d %H:%M')
+        return 'Не указана'
+    date.short_description = 'Дата регистрации'
+
+    def user_username(self, obj):
+        return obj.user.username
+    user_username.short_description = 'Логин'
+
+    
+    def user_email(self, obj):
+        return obj.user.email
+    user_email.short_description = 'Электронная почта'
+
+
+class JobSeekerAdmin(admin.ModelAdmin):
+    list_display = [
+        'user_username',
+        'user_email',
+        'resume',
+        'date',
+    ]
+
+    def date(self, obj):
+        if isinstance(obj.user.date_of_registration, str):
+            return obj.user.date_of_registration
+        elif obj.user.date_of_registration:
+            return obj.user.date_of_registration.strftime('%Y-%m-%d %H:%M')
+        return 'Не указана'
+    date.short_description = 'Дата регистрации'
+
+    def user_username(self, obj):
+        return obj.user.username
+    user_username.short_description = 'Логин'
+
+    def user_email(self, obj):
+        return obj.user.email
+    user_email.short_description = 'Электронная почта'
+
+
+admin.site.register(JobSeeker, JobSeekerAdmin)
+admin.site.register(Employer, EmployerAdmin)

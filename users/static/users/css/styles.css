@@ -147,6 +147,10 @@ body {
     flex: 1;
   }
 
+  .vacancy-list ul{
+    list-style: none;
+  }
+
   .vacancy-item {
     background-color: #fff;
     padding: 15px;
@@ -164,6 +168,12 @@ body {
   .vacancy-item p {
     margin-bottom: 5px;
     color: #555;
+  }
+
+  .empty-list h4{
+    text-align: center;
+    padding: 32px;
+    font-size: 32px;
   }
 
   .vacancy-item .company {

@@ -36,70 +36,25 @@
       </div>
 
       <div class="vacancy-list">
-        <div class="vacancy-item">
-          <h4>Программист Python</h4>
-          <p class="company">Яндекс</p>
-          <p class="salary">от 150 000 руб.</p>
-          <a href="#">Подробнее</a>
+        {% if not jobs %}
+        <div class="vacancy-item empty-list">
+          <h4>Вакансии отсутствуют</h4>
         </div>
-
-        <div class="vacancy-item">
-          <h4>Менеджер по продажам</h4>
-          <p class="company">Sber</p>
-          <p class="salary">от 80 000 руб.</p>
-          <a href="#">Подробнее</a>
-        </div>
-
-        <div class="vacancy-item">
-            <h4>Программист Python</h4>
-            <p class="company">Яндекс</p>
-            <p class="salary">от 150 000 руб.</p>
-            <a href="#">Подробнее</a>
-          </div>
-  
-          <div class="vacancy-item">
-            <h4>Менеджер по продажам</h4>
-            <p class="company">Sber</p>
-            <p class="salary">от 80 000 руб.</p>
-            <a href="#">Подробнее</a>
-          </div>
-  
-          <div class="vacancy-item">
-            <h4>Маркетолог</h4>
-            <p class="company">VK</p>
-            <p class="salary">от 100 000 руб.</p>
-            <a href="#">Подробнее</a>
-          </div>
-
-          <div class="vacancy-item">
-            <h4>Программист Python</h4>
-            <p class="company">Яндекс</p>
-            <p class="salary">от 150 000 руб.</p>
-            <a href="#">Подробнее</a>
-          </div>
-  
-          <div class="vacancy-item">
-            <h4>Менеджер по продажам</h4>
-            <p class="company">Sber</p>
-            <p class="salary">от 80 000 руб.</p>
-            <a href="#">Подробнее</a>
-          </div>
-  
-          <div class="vacancy-item">
-            <h4>Маркетолог</h4>
-            <p class="company">VK</p>
-            <p class="salary">от 100 000 руб.</p>
-            <a href="#">Подробнее</a>
-          </div>
-
-        <div class="vacancy-item">
-          <h4>Маркетолог</h4>
-          <p class="company">VK</p>
-          <p class="salary">от 100 000 руб.</p>
-          <a href="#">Подробнее</a>
-        </div>
-
-        <!-- ... другие вакансии ... -->
+        {% else %}
+        <ul>
+          {% for job in jobs %}
+          <li>
+            <div class="vacancy-item">
+              <h4>{{ job.title }}</h4>
+              <p class="company">{{ job.employer }}</p>
+              <p class="description">{{ job.description }}</p>
+              <p class="salary">{{ job.salary }}</p>
+              <a href="#">Подробнее</a>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
       </div>
     </div>
   </div>

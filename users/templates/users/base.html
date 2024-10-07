@@ -15,8 +15,11 @@
                 <ul class="nav-links">
                     <li><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
                     <li><a class="nav-link" href="{% url 'home' %}">Новости</a></li>
-                    <li><a class="nav-link" href="{% url 'home' %}">Соискателям</a></li>
-                    <li><a class="nav-link" href="{% url 'home' %}">Работодателям</a></li>
+                    <li><a class="nav-link" href="{% url 'job_seeker_signup' %}">Соискателям</a></li>
+                    <li><a class="nav-link" href="{% url 'employer_signup' %}">Работодателям</a></li>
+                    {% if user.user_type == 'employer' %}
+                        <li><a class="nav-link" href="{% url 'create_job' %}">Разместить вакансию</a></li>
+                    {% endif %}
                 </ul>
                 <span class="user-info">
                 {% if user.is_authenticated %}

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'users',
+    'jobs',
+    'manager',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTH_USER_MODEL = 'users.User'
 
 ROOT_URLCONF = 'proj.urls'
 
