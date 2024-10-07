@@ -28,5 +28,5 @@ class JobSeekerSignUpForm(UserCreationForm):
         user.user_type = 'seeker'
         if commit:
             user.save()
-            JobSeeker.objects.create(user=user, resume=self.cleaned_data['resume'])
+            JobSeeker.objects.create(user=user)
         return user

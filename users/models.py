@@ -23,7 +23,7 @@ class Employer(models.Model):
 
 class JobSeeker(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='user')
-    resume = models.TextField(verbose_name="Резюме")
+    resume = models.TextField(verbose_name="Резюме", null=True, blank=True)
 
     def __str__(self):
         return self.user.username

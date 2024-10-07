@@ -1,0 +1,19 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Вакансия {{ job.title }}{% endblock %}
+
+{% block content %}
+<div class="job-details">
+    <div class="job-content" style="text-align:center;">
+        <h1>{{ job.title }}</h1>
+        <p><strong>Компания:</strong> {{ job.employer }}</p>
+        <p><strong>Местоположение:</strong> {{ job.location }}</p>
+        <p><strong>Зарплата:</strong> {{ job.salary }}</p>
+        <p><strong>Описание:</strong> {{ job.description }}</p>
+        <p><strong>Дата публикации:</strong> {{ job.created_at }}</p>
+    
+        <a href="{% url 'home' %}">Вернуться к списку вакансий</a> 
+    </div>
+</div>
+
+{% endblock %}

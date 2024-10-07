@@ -6,11 +6,11 @@
     <div class="register">
         <div class="register-content" style="text-align:center;">
             <h2 class="title">Регистрация</h2>
-            <a class="advice" href="#">Есть аккаунт?</a>
+            <a class="advice" href="{% url 'login' %}">Есть аккаунт?</a>
             <form method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" id="btn-register">Зарегистрироваться</button>
+                <button type="submit" class="btn btn-auth">Зарегистрироваться</button>
             </form>
         </div>
     </div>

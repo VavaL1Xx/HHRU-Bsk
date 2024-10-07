@@ -176,13 +176,18 @@ input:-webkit-autofill:active{
 }
 
 .vacancy-item h4 {
+  font-size: 24px;
   margin-top: 0;
   margin-bottom: 5px;
   color: #2980b9;
 }
 
+.item-date {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
 .vacancy-item p {
-  margin-bottom: 5px;
   color: #555;
 }
 
@@ -194,10 +199,15 @@ input:-webkit-autofill:active{
 
 .vacancy-item .company {
   font-weight: bold;
+  font-size: 20px;
+  margin: 0;
 }
 
 .vacancy-item .salary {
   color: #2980b9;
+  margin: 0;
+  font-size: 32px;
+  font-weight: 600;
 }
 
 .vacancy-item a {
@@ -219,7 +229,7 @@ input:-webkit-autofill:active{
 .login p label,
 .register p label,
 .vacancy-creation p label,
-.errorlist li,
+/* .errorlist li, */
 .helptext {
   display: none;
 }
@@ -282,9 +292,8 @@ input:-webkit-autofill:active{
   color: #2980B9;
 }
 
-#btn-register {
+.btn {
   padding: 16px;
-  min-width: 288px;
   background: #2980B9;
   border: 2px solid #2980B9;
   border-radius: 8px;
@@ -295,11 +304,45 @@ input:-webkit-autofill:active{
   cursor: pointer;
   transition: all;
   transition: all .3s;
+  text-decoration: none !important;
 }
 
-#btn-register:hover {
+.btn-invert{
+  background: transparent !important;
+  color: #2980B9 !important;
+}
+
+.btn-invert:hover{
+  background: #2980B9 !important;
+  color: #ffffff!important;
+}
+
+.btn-auth{
+  min-width: 288px;
+}
+
+.job-btns-container{
+  display: flex;
+  gap: 16px;
+}
+
+.learn-more{
+  color: #fff !important;
+}
+.learn-more:hover{
+  color: #2980B9 !important;
+}
+
+.btn:hover {
   background: transparent;
   color: #2980B9;
+}
+
+.description{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 768px;
 }
 
 .title {
@@ -308,6 +351,6 @@ input:-webkit-autofill:active{
   color: #2980B9;
 }
 
-.errorlist li {
+/* .errorlist li {
   list-style: none;
-}
+} */

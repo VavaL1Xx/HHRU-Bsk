@@ -45,11 +45,17 @@
           {% for job in jobs %}
           <li>
             <div class="vacancy-item">
+              <p class="item-date">{{ job.date_of_creation }}</p>
               <h4>{{ job.title }}</h4>
               <p class="company">{{ job.employer }}</p>
               <p class="description">{{ job.description }}</p>
               <p class="salary">{{ job.salary }}</p>
-              <a href="#">Подробнее</a>
+              <div class="job-btns-container">
+                <a class="btn learn-more" href="{% url 'job_detail_view' job.id %}">Подробнее</a>
+                {% if user.user_type == 'seeker' %}
+                  <a class="btn btn-invert" href="{% url 'job_detail_view' job.id %}">Откликнуться</a>
+                {% endif %}
+              </div>
             </div>
           </li>
           {% endfor %}
