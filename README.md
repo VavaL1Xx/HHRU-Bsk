@@ -13,8 +13,3 @@ pip install -r requirements.txt
 Запускаете Django-сервер
 -
 python manage.py runserver
-
-Данные от учётки админа
-login: admin
-password: nzbp
---------------
