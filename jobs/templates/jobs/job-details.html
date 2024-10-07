@@ -3,6 +3,7 @@
 {% block title %}Вакансия {{ job.title }}{% endblock %}
 
 {% block content %}
+<div class="container white-background">
 <div class="job-details">
     <div class="job-content" style="text-align:center;">
         <h1>{{ job.title }}</h1>
@@ -15,5 +16,5 @@
         <a href="{% url 'home' %}">Вернуться к списку вакансий</a> 
     </div>
 </div>
-
+</div>
 {% endblock %}

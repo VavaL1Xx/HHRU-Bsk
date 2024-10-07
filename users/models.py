@@ -13,6 +13,7 @@ class User(AbstractUser):
     )
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='seeker')
     date_of_registration = models.DateTimeField(verbose_name='Дата регистрации', auto_now_add=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, verbose_name="Фотография профиля")
 
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='employer_profile')

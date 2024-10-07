@@ -47,6 +47,7 @@
 .header-top .user-avatar {
   border-radius: 4rem;
   height: 64px;
+  width: 64px;
   margin-inline: 8px;
 }
 
@@ -64,6 +65,13 @@ body {
   max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
+}
+
+.white-background{
+  background-color: #fff;
+  margin: 64px auto;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .header {
@@ -240,11 +248,13 @@ input:-webkit-autofill:active{
 
 .register-content,
 .login-content {
+  max-width: 320px;
   text-align: center;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 32px 64px;
+  margin: 128px 64px;
 }
 
 .register,
@@ -351,6 +361,129 @@ input:-webkit-autofill:active{
   color: #2980B9;
 }
 
-/* .errorlist li {
-  list-style: none;
-} */
+.errorlist {
+  display:  block!important;
+  list-style: none !important;
+  padding: 0;
+}
+
+.errorlist li{
+  background: #ff00001c;
+  padding: 8px 16px;
+}
+
+.errorlist li:not(:last-child){
+  margin-bottom: 8px;
+}
+
+
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture {
+  width: 256px;
+  height: 256px;
+  /* border-radius: 50%; */
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-details {
+  flex: 1;
+}
+
+.profile-details h3 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-size: 2.2em;
+}
+
+.profile-details p {
+  margin-bottom: 0;
+}
+
+.upload-area {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.upload-area input[type="file"] {
+  display: none;
+}
+
+.upload-area button {
+  background-color: #2980b9;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upload-area button:hover {
+  background-color: #21618c;
+}
+
+.resume-form {
+  margin-bottom: 20px;
+}
+
+.resume-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.resume-form input[type="text"],
+.resume-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.resume-form textarea {
+  height: 100px;
+}
+
+.profile-edit {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-edit input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-right: 10px;
+  flex: 1;
+}
+
+.profile-edit button {
+  background-color: #2980b9;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-edit button:hover {
+  background-color: #21618c;
+}
