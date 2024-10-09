@@ -5,9 +5,18 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
-from .forms import EmployerSignUpForm, JobSeekerSignUpForm, UserProfileForm
 from jobs.models import Job
+from .forms import EmployerSignUpForm, JobSeekerSignUpForm, UserProfileForm
+from .serializers import EmployerSerializer, JobSeekerSerializer, UserSerializer
+from .models import JobSeeker, Employer, User
+
+from rest_framework.decorators import api_view
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.response import Response
+from rest_framework import generics
+
 
 def employer_signup(request):
 
@@ -81,3 +90,51 @@ def profile_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+class JobSeekerListCreate(ListCreateAPIView):
+    queryset = JobSeeker.objects.all()
+    serializer_class = JobSeekerSerializer
+
+class JobSeekerDetail(RetrieveUpdateDestroyAPIView):
+    queryset = JobSeeker.objects.all()
+    serializer_class = JobSeekerSerializer
+
+
+@api_view(['GET'])
+def all_seekers(request):
+    # Получаем все вакансии
+    jobs = JobSeeker.objects.all()
+    serializer = JobSeekerSerializer(jobs, many=True)
+    return Response(serializer.data)
+
+class EmployerListCreate(ListCreateAPIView):
+    queryset = Employer.objects.all()
+    serializer_class = EmployerSerializer
+
+class EmployerDetail(RetrieveUpdateDestroyAPIView):
+    queryset = Employer.objects.all()
+    serializer_class = EmployerSerializer
+
+
+@api_view(['GET'])
+def all_seekers(request):
+    # Получаем все вакансии
+    jobs = Employer.objects.all()
+    serializer = EmployerSerializer(jobs, many=True)
+    return Response(serializer.data)
+
+class UserListCreate(ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetail(RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+@api_view(['GET'])
+def all_seekers(request):
+    # Получаем все вакансии
+    jobs = User.objects.all()
+    serializer = UserSerializer(jobs, many=True)
+    return Response(serializer.data)

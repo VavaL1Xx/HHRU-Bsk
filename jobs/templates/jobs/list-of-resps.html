@@ -1,0 +1,12 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block title %}Список откликнувшихся{% endblock %}
+
+{% block content %}
+<div class="container">
+{% for resp in resps%}
+    <div>{{resp.job}} - {{resp.date_of_response}}<br>
+    {{resp.job_seeker}} - {{resp.employer}}</div>
+{% endfor %}
+</div>
+{% endblock %}

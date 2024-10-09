@@ -1,3 +1,5 @@
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
+
 .container {
   max-width: 1200px;
   min-width: 1200px;
@@ -45,6 +47,7 @@
 }
 
 .header-top .user-avatar {
+  object-fit: cover;
   border-radius: 4rem;
   height: 64px;
   width: 64px;
@@ -76,7 +79,7 @@ body {
 
 .header {
   background-color: #fff;
-  padding: 20px;
+  padding: 0 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -171,13 +174,43 @@ input:-webkit-autofill:active{
   flex: 1;
 }
 
+.vacancy-main-info{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vacancy-side-info{
+  display: flex;
+  align-items: center;
+  color: #a3a3a3;
+}
+
+.main-side{
+  display: flex;
+}
+
+.vacancy-image{
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  justify-content: center;
+  width: 64px;
+}
+
+.vacancy-image img{
+  object-fit: cover;
+  height: 64px;
+  width: 64px;
+}
+
 .vacancy-list ul {
   list-style: none;
 }
 
 .vacancy-item {
   background-color: #fff;
-  padding: 15px;
+  padding: 16px 32px;
   margin-bottom: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -302,8 +335,29 @@ input:-webkit-autofill:active{
   color: #2980B9;
 }
 
+.btn i{
+  display: flex;
+}
+
+.btn.responded{
+  border-color: #6ab36c !important;
+  color: #6ab36c!important;
+}
+.btn.responded:hover{
+  background-color: #6ab36c!important;
+}
+
+.btn.featured{
+  border-color: #ff4646;
+  background-color: #ff4646;
+}
+
+.btn.featured:hover{
+  color: #ff4646 !important;
+}
+
 .btn {
-  padding: 16px;
+  padding: 12px 16px;
   background: #2980B9;
   border: 2px solid #2980B9;
   border-radius: 8px;
@@ -333,7 +387,14 @@ input:-webkit-autofill:active{
 
 .job-btns-container{
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.btns-block{
+  display: flex;
+  gap: 12px;
 }
 
 .learn-more{
@@ -486,4 +547,43 @@ input:-webkit-autofill:active{
 
 .profile-edit button:hover {
   background-color: #21618c;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.search-bar input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  width: 300px; /* Ширина поля ввода */
+}
+
+.search-bar select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px; /* Отступ между элементами */
+  width: 150px; /* Ширина селекта */
+}
+
+.search-bar button {
+  padding: 10px 15px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff; /* Цвет кнопки */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background-color: #0056b3; /* Цвет кнопки при наведении */
 }

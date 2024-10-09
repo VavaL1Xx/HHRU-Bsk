@@ -1,5 +1,5 @@
 {% extends 'users/base.html' %}
-
+{% load static %}
 {% block title %}HeadHunter | Работа мечты{% endblock %}
 
 {% block content %}
@@ -7,9 +7,27 @@
     <div class="header">
       <div class="logo">HeadHunter БСК</div>
       <div class="search-bar">
-        <input type="text" placeholder="Поиск вакансий...">
-        <button>Искать</button>
-      </div>
+        <input id="search-input" type="text" placeholder="Поиск вакансий...">
+        <select id="industry-filter">
+            <option value="">Все отрасли</option>
+            <option value="IT">IT</option>
+            <option value="Продажи">Продажи</option>
+            <option value="Маркетинг">Маркетинг</option>
+            <option value="Финансы">Финансы</option>
+            <option value="HR">HR</option>
+            <!-- Добавьте другие отрасли по необходимости -->
+        </select>
+        <select id="city-filter">
+            <option value="">Все города</option>
+            <option value="Москва">Москва</option>
+            <option value="Санкт-Петербург">Санкт-Петербург</option>
+            <option value="Екатеринбург">Екатеринбург</option>
+            <option value="Новосибирск">Новосибирск</option>
+            <option value="Красноярск">Красноярск</option>
+            <!-- Добавьте другие города по необходимости -->
+        </select>
+        <button onclick="searchJobs()">Искать</button>
+    </div>
     </div>
 
     <div class="main-content">
@@ -35,7 +53,7 @@
         </ul>
       </div>
 
-      <div class="vacancy-list">
+      <div class="vacancy-list" id="vacancy-list">
         {% if not jobs %}
         <div class="vacancy-item empty-list">
           <h4>Вакансии отсутствуют</h4>
@@ -45,16 +63,50 @@
           {% for job in jobs %}
           <li>
             <div class="vacancy-item">
-              <p class="item-date">{{ job.date_of_creation }}</p>
-              <h4>{{ job.title }}</h4>
-              <p class="company">{{ job.employer }}</p>
+              <div class="vacancy-main-info">
+                <div class="main-side">
+                  <div class="vacancy-image">
+                      {% if job.employer.user.profile_picture %}
+                        <img src="{{ job.employer.user.profile_picture.url }}" alt="Фото профиля">
+                      {% else %}
+                        <img src="{% static 'users/images/user_avatar_default.png' %}" alt="Фото профиля">
+                      {% endif %}
+                    </div>
+                    <div>
+                      <p class="item-date">{{ job.date_of_creation }}</p>
+                      <h4>{{ job.title }}</h4>
+                      <p class="company">{{ job.employer }}</p>
+                    </div>
+                </div>
+                <div class="vacancy-side-info">
+                  <span>{{job.resps}} откликов</span>
+                </div>
+              </div>
               <p class="description">{{ job.description }}</p>
-              <p class="salary">{{ job.salary }}</p>
               <div class="job-btns-container">
-                <a class="btn learn-more" href="{% url 'job_detail_view' job.id %}">Подробнее</a>
-                {% if user.user_type == 'seeker' %}
-                  <a class="btn btn-invert" href="{% url 'job_detail_view' job.id %}">Откликнуться</a>
-                {% endif %}
+                <div class="btns-block">
+                  {% if not job.id in featured_jobs %}
+                    <a class="btn learn-more" href="{% url 'job_feature_view' job.id %}"><i class="fi fi-ss-heart"></i></a>
+                  {% else %}
+                      <a class="btn learn-more featured" href="{% url 'feature_delete_view' job.id %}"><i class="fi fi-ss-heart"></i></a>
+                  {% endif %}
+                  <a class="btn learn-more" href="{% url 'job_detail_view' job.id %}">Подробнее</a>
+                  {% if user.user_type == 'seeker' %}
+                    {% if job.id in responded_jobs %}
+                      <span class="btn btn-invert responded">Вы откликнулись</span>
+                    {% else %}
+                      <a class="btn btn-invert" href="{% url 'job_response_view' job.id %}">Откликнуться</a>
+                    {% endif %}
+                  {% endif %}
+                  {% if user.user_type == 'employer' %}
+                    {% if user.id == job.employer.user.id %}
+                      <a class="btn btn-invert close" href="{% url 'delete_job' job.id %}">Закрыть</a>
+                    {% endif %}
+                  {% endif %}
+                </div>
+                <div>
+                  <p class="salary">{{ job.salary }}</p>
+                </div>
               </div>
             </div>
           </li>

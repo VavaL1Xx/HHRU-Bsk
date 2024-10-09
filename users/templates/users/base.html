@@ -7,6 +7,7 @@
     {% load static %}
     <link rel="icon" href="{% static 'users/images/hhrubs-favicon.png' %}"></link>
     <link rel="stylesheet" href="{% static 'users/css/styles.css' %}">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css'>
 </head>
 <body>
     <header class="header-top">
@@ -17,8 +18,12 @@
                     <li><a class="nav-link" href="{% url 'home' %}">Новости</a></li>
                     <li><a class="nav-link" href="{% url 'job_seeker_signup' %}">Соискателям</a></li>
                     <li><a class="nav-link" href="{% url 'employer_signup' %}">Работодателям</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a class="nav-link" href="{% url 'features_list_view' %}">Избранное</a></li>
+                    {% endif %}
                     {% if user.user_type == 'employer' %}
                         <li><a class="nav-link" href="{% url 'create_job' %}">Разместить вакансию</a></li>
+                        <li><a class="nav-link" href="{% url 'responses_list_view' %}">Отклики</a></li>
                     {% endif %}
                 </ul>
                 <span class="user-info">
