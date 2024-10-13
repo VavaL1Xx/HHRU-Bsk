@@ -24,7 +24,10 @@ from manager.views import home_view
 urlpatterns = [
     path('', home_view, name='home'),
     path('admin/', admin.site.urls),
+    
+    # Приложение Users
     path('users/', include('users.urls')),
+    # Приложение Jobs
     path('jobs/', include('jobs.urls')),
 ]
 

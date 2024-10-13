@@ -8,6 +8,8 @@
     <link rel="icon" href="{% static 'users/images/hhrubs-favicon.png' %}"></link>
     <link rel="stylesheet" href="{% static 'users/css/styles.css' %}">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+    {% block additionals %}
+    {% endblock %}
 </head>
 <body>
     <header class="header-top">
@@ -35,7 +37,6 @@
                         {% else %}
                             <img class="user-avatar" src="{% static 'users/images/user_avatar_default.png' %}" alt="Фото профиля">
                         {% endif %}
-                        <!-- <a class="nav-link" href="{% url 'logout' %}">Выйти</a> -->
                     </a>
                 {% else %}
                     <a class="nav-link" href="{% url 'login' %}">Войти</a>

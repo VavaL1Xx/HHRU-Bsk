@@ -1,10 +1,70 @@
 {% extends 'users/base.html' %}
 {% load static %}
-{% block title %}Профиль пользователя{% endblock %}
+{% block title %}
+  Профиль 
+  {% if user.user_type == 'employer' %}работодателя
+  {% elif user.user_type == 'job_seeker' %}соискателя{% endif %}
+{% endblock %}
+
+{% block additionals %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+
+<style>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js');
+
+body {
+    background: #f0f0f0;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #2980b9;
+}
+
+.profile-button {
+    background: #2980b9;
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: #2980b9
+}
+
+.profile-button:focus {
+    background: #2980b9;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #2980b9;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #2980b9;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.add-experience:hover {
+    background: #2980b9;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #2980b9
+}
+</style>
+{% endblock %}
 
 {% block content %}
-  <div class="container white-background">
-    
+  <!--<div class="container white-background">
     <div class="profile-info">
       <div class="profile-details">
         <form method="post" enctype="multipart/form-data">
@@ -32,8 +92,82 @@
           </div>
           <button type="submit" class="btn">Сохранить изменения</button>
           <a class="btn btn-invert" href="{% url 'logout' %}">Выйти</a>
-      </form>
+        </form>
       </div>
     </div>
+  </div>-->
+  <div class="container rounded bg-white mt-5 mb-5">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+              {% if user.profile_picture %}
+                <img class="rounded-circle mt-5" width="150px" src="{{ user.profile_picture.url }}" alt="Фото профиля">
+              {% else %}
+                <img class="rounded-circle mt-5" width="150px" src="{% static 'users/images/user_avatar_default.png' %}" alt="Фото профиля">
+              {% endif %}
+              <span class="font-weight-bold">{{user.username}}</span>
+              <span class="text-black-50">Время захода<br>{{user.last_login}}</span></div>
+              {{user_form.profile_picture}}
+            </div>
+            <div class="col-md-5 border-right">
+              <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Настройки профиля 
+                    {%if not user.is_superuser %}
+                      {% if user.user_type == 'seeker' %} 
+                      <span>соискателя</span>
+                      {% elif user.user_type == 'employer' %}
+                      <span>работодателя</span>
+                      {% endif %}
+                    {% endif %}
+                    </h4>
+                </div>
+                  <div class="row mt-2">
+                      <div class="col-md-6"><label class="labels">Логин</label>{{ user_form.username }}</div>
+                      <div class="col-md-6"><label class="labels">Пароль</label>{{ user_form.password }}</div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-md-6"><label class="labels">Страна</label>{{ user_form.country }}</div>
+                    <div class="col-md-6"><label class="labels">Регион/Город</label>{{user_form.region}}</div>
+                  </div>
+                  <div class="row mt-3">
+                      <div class="col-md-12"><label class="labels">Номер телефона</label>{{user_form.phone_number}}</div>
+                      <div class="col-md-12"><label class="labels">Почтовый ящик</label>{{user_form.email}}</div>
+                      {% if not user.is_superuser %}
+                        {% if user.user_type == 'seeker' %}
+                          <div class="col-md-12"><label class="labels">Образование</label>{{seeker_form.education}}</div>
+                          <div class="col-md-12"><label class="labels">Опыт работы</label>{{seeker_form.experience}}</div>
+                          <div class="col-md-12"><label class="labels">Навыки</label>{{seeker_form.skills}}</div>
+                          <div class="col-md-12"><label class="labels">Желаемая категория работы</label>{{seeker_form.desired_job_type}}</div>
+                          <div class="col-md-12"><label class="labels">Желаемая заработная плата</label>{{seeker_form.desired_salary}}</div>
+                          <div class="col-md-12"><label class="labels">Желаемое место работы</label>{{seeker_form.desired_location}}</div>
+                          <div class="col-md-12"><label class="labels">Ссылка на ваше портфолио</label>{{seeker_form.portfolio_link}}</div>
+                          <div class="col-md-12"><label class="labels">Языки во владении</label>{{seeker_form.languages}}</div>
+                          <div class="col-md-12"><label class="labels">Интересы</label>{{seeker_form.interests}}</div>
+                        {% elif user.user_type == 'employer' %}
+                          <div class="col-md-12"><label class="labels">Название компании</label>{{employer_form.company_name}}</div>
+                          <div class="col-md-12"><label class="labels">ИНН</label>{{employer_form.inn}}</div>
+                          <div class="col-md-12"><label class="labels">Отрасль</label>{{employer_form.industry}}</div>
+                          <div class="col-md-12"><label class="labels">Адрес</label>{{employer_form.company_address}}</div>
+                          <div class="col-md-12"><label class="labels">Сайт</label>{{employer_form.website}}</div>
+                          <div class="col-md-12"><label class="labels">Описание</label>{{employer_form.company_description}}</div>
+                        {% endif %}
+                      {% endif %}
+                  </div>
+                  <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Сохранить изменения</button></div>
+                  <a class="btn btn-primary" href="{% url 'logout' %}">Выйти</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div><br>
+                <div class="col-md-12"><label class="labels">Experience in Designing</label><input type="text" class="form-control" placeholder="experience" value=""></div> <br>
+                <div class="col-md-12"><label class="labels">Additional Details</label><input type="text" class="form-control" placeholder="additional details" value=""></div>
+            </div>
+        </div>
+      </div>
+    </form>
   </div>
 {% endblock %}

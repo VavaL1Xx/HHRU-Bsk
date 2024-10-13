@@ -29,7 +29,6 @@ class ResponseAdmin(admin.ModelAdmin):
     list_display =[
         'status',
         'job',
-        'employer',
         'job_seeker',
         'creation',
     ]

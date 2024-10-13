@@ -93,7 +93,7 @@ body {
   justify-content: center;
 }
 
-input:-webkit-autofill,
+/* input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active{
@@ -101,7 +101,7 @@ input:-webkit-autofill:active{
     -webkit-text-fill-color: #2980b9;
     transition: background-color 5000s ease-in-out 0s;
     box-shadow: inset 0 0 20px 20px transparent;
-}
+} */
 
 .logo {
   font-size: 2em;
@@ -309,7 +309,7 @@ input:-webkit-autofill:active{
   margin: 0;
 }
 
-#id_username,
+/* #id_username,
 #id_email,
 #id_password,
 #id_company_name,
@@ -333,7 +333,7 @@ input:-webkit-autofill:active{
 #id_password1::placeholder,
 #id_password2::placeholder {
   color: #2980B9;
-}
+} */
 
 .btn i{
   display: flex;

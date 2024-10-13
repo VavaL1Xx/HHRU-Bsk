@@ -15,6 +15,12 @@ class Job(models.Model):
         ('trade', 'Торговля'),
     )
 
+    JOB_EMPLOYMENT_TYPE = (
+        ('full', 'Полная занятость'),
+        ('half', 'Неполная занятость'),
+        ('free', 'Удаленно'),
+    )
+
     title = models.CharField(verbose_name="Наименование вакансии", max_length=255)
     industry = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, default='it', verbose_name="Категория")
     employer = models.ForeignKey(Employer, verbose_name="Работодатель", on_delete=models.CASCADE, related_name='empl')
@@ -25,7 +31,7 @@ class Job(models.Model):
     location = models.CharField(verbose_name="Место (Адрес)", max_length=255)
     description = models.TextField(verbose_name="Описание")
     
-    employment_type = models.CharField(verbose_name="Тип занятости", max_length=50, default='Полная занятость')
+    employment_type = models.CharField(verbose_name="Тип занятости", choices=JOB_EMPLOYMENT_TYPE, max_length=50, default='full')
     resps = models.BigIntegerField(verbose_name="Кол-во откликов", default=0)
     date_of_creation = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
 
@@ -42,12 +48,11 @@ class Response(models.Model):
 
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='responses')
     job_seeker = models.ForeignKey(JobSeeker, on_delete=models.CASCADE, related_name='responses')
-    employer = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name='responses')
     date_of_response = models.DateTimeField(verbose_name='Дата отклика', auto_now_add=True)
     
-    cover_letter = models.TextField(verbose_name="Сопроводительное письмо", blank=True)
+    cover_letter = models.TextField(verbose_name="Сопроводительное письмо", blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    employer_feedback = models.TextField(verbose_name="Обратная связь", blank=True)
+    employer_feedback = models.TextField(verbose_name="Обратная связь", blank=True, null=True)
 
     class Meta:
         unique_together = ('job', 'job_seeker')
