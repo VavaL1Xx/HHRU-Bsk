@@ -22,7 +22,7 @@ class Job(models.Model):
     )
 
     title = models.CharField(verbose_name="Наименование вакансии", max_length=255)
-    industry = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, default='it', verbose_name="Категория")
+    industry = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, verbose_name="Категория")
     employer = models.ForeignKey(Employer, verbose_name="Работодатель", on_delete=models.CASCADE, related_name='empl')
     requirements = models.TextField(verbose_name="Требования", blank=True)
     salary = models.CharField(verbose_name="Зарплата", max_length=255)

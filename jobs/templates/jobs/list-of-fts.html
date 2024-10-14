@@ -2,11 +2,83 @@
 {% load static %}
 {% block title %}Список избранных вакансий{% endblock %}
 
+{% block additionals %}
+<script>
+    const isSuper = "{{ user.is_superuser }}" === "True";
+    console.log(isSuper);
+    const isAuthenticated = "{{ user.is_authenticated }}" === "True";
+    console.log(isAuthenticated);
+    const userType = isAuthenticated ? "{{ user.user_type }}" : None;
+    console.log(userType);
+    const featuredJobs = isAuthenticated ? JSON.parse("{{ featured_jobs }}") : None;
+    console.log(featuredJobs);
+    const respondedJobs = isAuthenticated ? JSON.parse("{{ responded_jobs }}") : None;
+    console.log(respondedJobs);
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="container">
-{% for ft in fts%}
-    <div>{{ft.job.title}} - {{ft.job.employer}}<br>
-    {{ft.job.resps}} - {{ft.job.salary}}</div>
-{% endfor %}
+    <div class="header">
+        <div class="logo">HeadHunter БСК</div>
+            <div class="search-bar">
+                <input id="search-input" type="text" placeholder="Поиск вакансий...">
+                <select id="industry-filter">
+                    <option value="">Все отрасли</option>
+                    <option value="IT">IT</option>
+                    <option value="Продажи">Продажи</option>
+                    <option value="Маркетинг">Маркетинг</option>
+                    <option value="Финансы">Финансы</option>
+                    <option value="HR">HR</option>
+                </select>
+                <select id="city-filter">
+                    <option value="">Все города</option>
+                    <option value="Москва">Москва</option>
+                    <option value="Санкт-Петербург">Санкт-Петербург</option>
+                    <option value="Екатеринбург">Екатеринбург</option>
+                    <option value="Новосибирск">Новосибирск</option>
+                    <option value="Красноярск">Красноярск</option>
+                    <!-- Добавьте другие города по необходимости -->
+                </select>
+                <button onclick="searchJobs()">Искать</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <h3>Поиск по отраслям</h3>
+                <ul>
+                <li><a href="#">IT</a></li>
+                <li><a href="#">Продажи</a></li>
+                <li><a href="#">Маркетинг</a></li>
+                <li><a href="#">Финансы</a></li>
+                <li><a href="#">HR</a></li>
+                <!-- ... другие отрасли ... -->
+                </ul>
+
+                <h3>Поиск по городам</h3>
+                <ul>
+                <li><a href="#">Москва</a></li>
+                <li><a href="#">Санкт-Петербург</a></li>
+                <li><a href="#">Екатеринбург</a></li>
+                <li><a href="#">Новосибирск</a></li>
+                <li><a href="#">Красноярск</a></li>
+                <!-- ... другие города ... -->
+                </ul>
+            </div>
+
+            <div class="vacancy-list" id="vacancy-list">
+                <ul id="vacancy-list-ul">
+                </ul>
+            </div>
+        </div>
 </div>
+{% endblock %}
+
+{% block bottom_additionals%}
+<script src="{% static 'users/js/schedule.js' %}"></script>
+<script src="{% static 'users/js/search.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', loadAllData('/jobs/features/'));
+</script>
 {% endblock %}

@@ -20,8 +20,8 @@ urlpatterns = [
     
     # URL для Django
 
-    path('view_responses/', views.responses_list_view, name='responses_list_view'),
-    path('view_features/', views.features_list_view, name='features_list_view'),
+    path('responses/', views.responses_list_view, name='responses_list_view'),
+    path('features/', views.features_list_view, name='features_list_view'),
 
     path('create/job/', views.create_job, name='create_job'),
     path('delete/job/<int:job_id>/', views.delete_job, name='delete_job'),

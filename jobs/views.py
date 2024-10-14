@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -101,8 +103,15 @@ def feature_delete(request, job_id):
 
 @login_required
 def features_list_view(request):
-    fts = Feature.objects.filter(user=request.user)
-    return render(request, 'jobs/list-of-fts.html', {'fts': fts})
+    context = {}
+    user_features = Feature.objects.filter(user=request.user)
+    if not user_features: 
+        user_features = []
+
+    featured_jobs = [feature.job.id for feature in user_features]
+    context['featured_jobs'] = json.dumps(featured_jobs)
+    print(featured_jobs)
+    return render(request, 'jobs/list-of-fts.html', {'featured_jobs': featured_jobs})
 
 
 # -------------

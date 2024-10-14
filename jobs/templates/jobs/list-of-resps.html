@@ -3,15 +3,8 @@
 {% block title %}Список откликнувшихся{% endblock %}
 
 {% block content %}
-<!-- <div class="container">
-{% for resp in resps%}
-    <div>{{resp.job}} - {{resp.date_of_response}}<br>
-    {{resp.job_seeker}} - {{resp.employer}}</div>
-{% endfor %}
-</div> -->
-
 <div class="container">
-<div class="vacancy-list" id="vacancy-list">
+  <div class="vacancy-list" id="vacancy-list">
     {% if not resps %}
     <div class="vacancy-item empty-list">
       <h4>Вакансии отсутствуют</h4>
@@ -55,6 +48,6 @@
       {% endfor %}
     </ul>
     {% endif %}
-</div>
+  </div>
 </div>
 {% endblock %}
