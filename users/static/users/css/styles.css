@@ -1,5 +1,6 @@
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
 
 .container {
   max-width: 1200px;
@@ -11,7 +12,7 @@
   font-size: 18px;
   font-family: 'Helvetica';
   text-decoration: none;
-  color: #000;
+  color: #ffffff;
 }
 
 .nav-links {
@@ -37,7 +38,7 @@
 
 .nav-link {
   padding: 0 !important;
-  color: #ffffff;
+  color: #000000;
   text-decoration: none;
   font-size: 13px;
 }
@@ -51,10 +52,15 @@
   justify-content: space-between;
 }
 
+.sel{
+  color: #16a3ff;
+  text-decoration: underline;
+}
+
 .header-top {
   max-height: 40px;
   min-height: 40px;
-  background-color: #000000;
+  background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
@@ -197,7 +203,8 @@ input:-webkit-autofill:active{
 
 .vacancy-side-info{
   display: flex;
-  align-items: center;
+  /* align-items: center; */
+  flex-direction: column;
   color: #a3a3a3;
 }
 
@@ -309,7 +316,7 @@ input:-webkit-autofill:active{
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 32px 64px;
-  margin: 128px 64px;
+  /* margin: 128px 64px; */
 }
 
 .register,
@@ -436,7 +443,7 @@ input:-webkit-autofill:active{
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   max-width: 768px;
 }

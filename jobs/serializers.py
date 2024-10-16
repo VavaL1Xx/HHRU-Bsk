@@ -1,10 +1,16 @@
 from rest_framework import serializers
 
-from .models import Job, Response, Feature
+from .models import Job, Response, Feature, Skill
 from users.serializers import EmployerSerializer, UserSerializer, JobSeekerSerializer
+
+class SkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = '__all__'
 
 class JobSerializer(serializers.ModelSerializer):
     employer = EmployerSerializer()
+    skills = SkillsSerializer(many=True)
     class Meta:
         model = Job
         fields = '__all__'

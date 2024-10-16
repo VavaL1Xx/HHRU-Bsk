@@ -3,6 +3,7 @@ import json
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 
 from rest_framework.decorators import api_view
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
@@ -10,8 +11,8 @@ from rest_framework.response import Response
 from rest_framework import generics
 
 from .forms import JobForm
-from .serializers import JobSerializer, ResponseSerializer, FeatureSerializer
-from .models import Feature, Job, Response as resp
+from .serializers import JobSerializer, ResponseSerializer, FeatureSerializer, SkillsSerializer
+from .models import Feature, Skill, Job, Response as resp
 
 
 # -------------------------------------
@@ -24,10 +25,14 @@ def create_job(request):
         if request.method == 'POST':
             form = JobForm(request.POST)
             if form.is_valid():
+                # print(request.POST)
                 job = form.save(commit=False)
                 job.employer = request.user.employer_profile
                 job.save()
+                form.save_m2m()
+                # print(job.skills.all())
                 return redirect('home')
+            print(form.errors)
         else:
             form = JobForm()
         return render(request, 'jobs/job-creation.html', {'form': form})
@@ -41,7 +46,11 @@ def delete_job(request, job_id):
 
 def job_detail_view(request, job_id):
     job = get_object_or_404(Job, id=job_id)
-    return render(request, 'jobs/job-details.html', {'job': job})
+    context = {
+        'job': job,
+        'user_type': request.session.get('user_type'),
+    }
+    return render(request, 'jobs/job-details.html', context)
 
 
 # ------------------
@@ -64,8 +73,8 @@ def response_create_view(request, job_id):
             resp.objects.create(job=job, job_seeker=job_seeker_profile)
             job.resps += 1
             job.save()
-            return redirect('home')
-    return redirect('home')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
@@ -87,10 +96,10 @@ def feature_create_view(request, job_id):
     already_featured = False
 
     if job and not already_featured:
-        print(request.user.id)
+        # print(request.user.id)
         Feature.objects.create(job=job, user=request.user)
-        return redirect('home')
-    return redirect('home')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
@@ -98,20 +107,37 @@ def feature_delete(request, job_id):
     job = get_object_or_404(Job, id=job_id)
     feature = get_object_or_404(Feature, job=job, user=request.user)
     feature.delete()
-    return redirect('home')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
 def features_list_view(request):
-    context = {}
-    user_features = Feature.objects.filter(user=request.user)
-    if not user_features: 
-        user_features = []
+    if request.user.is_authenticated:
+        context = {
+            'user_type': request.session.get('user_type'),
+            'jobs' : [],
+            'responded_jobs': [],
+            'feature_jobs': [],
+        }
+        user_features = Feature.objects.filter(user=request.user)
 
-    featured_jobs = [feature.job.id for feature in user_features]
-    context['featured_jobs'] = json.dumps(featured_jobs)
-    print(featured_jobs)
-    return render(request, 'jobs/list-of-fts.html', {'featured_jobs': featured_jobs})
+        cities = user_features.values_list('job__location', flat=True).distinct()
+        industries = user_features.values_list('job__industry', flat=True).distinct()
+        context['cities'] = cities
+        context['industries'] = industries
+
+        if not user_features: 
+            user_features = []
+
+        if request.user.user_type == "seeker":
+            user_responses = resp.objects.filter(job_seeker=request.user.jobseeker_profile) if hasattr(request.user, 'jobseeker_profile') else []
+            responded_jobs = [response.job.id for response in user_responses]
+            context['responded_jobs'] = responded_jobs
+
+        featured_jobs = [feature.job.id for feature in user_features]
+        context['featured_jobs'] = json.dumps(featured_jobs)
+
+    return render(request, 'jobs/list-of-fts.html', context)
 
 
 # -------------
@@ -130,6 +156,17 @@ def all_jobs(request):
     return Response(serializer.data)
 
 
+class SkillsDetail(RetrieveUpdateDestroyAPIView):
+    queryset = Skill.objects.all()
+    serializer_class = SkillsSerializer
+
+@api_view(['GET'])
+def all_skills(request):
+    skills = Skill.objects.all()
+    serializer = SkillsSerializer(skills, many=True)
+    return Response(serializer.data)
+
+
 class ResponseDetail(RetrieveUpdateDestroyAPIView):
     queryset = resp.objects.all()
     serializer_class = ResponseSerializer
@@ -141,13 +178,9 @@ def all_responses(request):
     return Response(serializer.data)
 
 
-class FeatureDetail(RetrieveUpdateDestroyAPIView):
-    queryset = Feature.objects.all()
-    serializer_class = FeatureSerializer
-
 @api_view(['GET'])
-def all_features(request):
-    jobs = Feature.objects.all()
+def all_features(request, pk):
+    jobs = Feature.objects.filter(user=pk)
     serializer = FeatureSerializer(jobs, many=True)
     return Response(serializer.data)
 
@@ -179,4 +212,22 @@ def search_jobs(request):
         jobs = jobs.filter(location__iexact=city)
 
     serializer = JobSerializer(jobs, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def search_features(request):
+    query = request.GET.get('q', '')
+    industry = request.GET.get('industry', '')
+    city = request.GET.get('city', '')
+
+    jobs = Feature.objects.filter(
+        Q(job__title__icontains=query) | Q(job__description__icontains=query) | Q(job__employer__company_name__icontains=query)
+    )
+    if industry:
+        jobs = jobs.filter(job__industry__iexact=industry)
+    if city:
+        jobs = jobs.filter(job__location__iexact=city)
+
+    serializer = FeatureSerializer(jobs, many=True)
     return Response(serializer.data)

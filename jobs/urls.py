@@ -7,6 +7,8 @@ from . import views
 urlpatterns = [
     
     # URL для API
+    
+    path('api/skills/all/', views.all_skills, name='all_skills'),
 
     path('api/jobs/search/', views.search_jobs, name='search_jobs'),
     path('api/jobs/all/', views.all_jobs, name='all_jobs'),
@@ -15,8 +17,8 @@ urlpatterns = [
     path('api/responses/all/', views.all_responses, name='all_responses'),
     path('api/responses/<int:pk>/', views.ResponseDetail.as_view(), name='response-detail'),
     
-    path('api/features/all/', views.all_features, name='all_features'),
-    path('api/features/<int:pk>/', views.FeatureDetail.as_view(), name='feature-detail'),
+    path('api/features/<int:pk>/', views.all_features, name='feature-detail'),
+    path('api/features/search/', views.search_features, name='feature-detail'),
     
     # URL для Django
 

@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container" style="background: #fff;border-radius: 16px;padding: 48px 64px;margin-bottom: 96px;">
+<div class="container" style="background: #fff;border-radius: 16px;padding: 48px 0;margin-bottom: 96px;">
     <form method="post">
         {% csrf_token %}
         <div class="mb-3">
@@ -31,8 +31,8 @@
             {{form.industry}}
         </div>
         <div class="mb-3">
-            <label class="form-label">Требования</label>
-            {{form.requirements}}
+            <label class="form-label">Навыки</label>
+            {{form.skills}}
         </div>
         <div class="mb-3">
             <label class="form-label">Заработная плата</label>

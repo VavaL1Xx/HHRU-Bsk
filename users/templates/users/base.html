@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{% static 'users/css/styles.css' %}">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+
     {% block additionals %}
     {% endblock %}
 </head>
@@ -18,9 +20,8 @@
             <nav class="top-panel">
                 <ul class="nav-links">
                     <li><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
-                    <li><a class="nav-link" href="{% url 'home' %}">Новости</a></li>
-                    <li><a class="nav-link" href="{% url 'job_seeker_signup' %}">Соискателям</a></li>
-                    <li><a class="nav-link" href="{% url 'employer_signup' %}">Работодателям</a></li>
+                    <li><a class="nav-link {% if user_type == 'seeker' %}sel{% endif %}" href="{% if not user_type == 'seeker' %}{% url 'set_user_type' 'seeker' %}{% endif %}" id="job-seeker-btn" href="#">Соискатель</a></li>
+                    <li><a class="nav-link {% if user_type == 'employer' %}sel{% endif %}" href="{% if not user_type == 'employer' %}{% url 'set_user_type' 'employer' %}{% endif %}" id="employer-btn" href="#">Работодатель</a></li>
                     {% if user.is_authenticated %}
                     <li><a class="nav-link" href="{% url 'features_list_view' %}">Избранное</a></li>
                     {% endif %}
@@ -33,7 +34,7 @@
         </div>
     </header>
     
-    <div style="margin-top: 32px;">
+    <div style="padding: 10px 0;background: #1d1d1d;">
         <div class="container" style="margin: 0 auto;padding: 0 20px;">
             <div style="justify-content: space-between;display: flex;">
                 <div style="display: flex;align-items: center;justify-content: center;gap: 24px;">
@@ -47,13 +48,13 @@
                     {% endif %}
                     <span class="sub-link">Помощь</span>
                 </div>
-            <div class="btns-block">
+                 <div class="btns-block">
                 {% if not user.is_authenticated %}
-                    <a class="btn btn-invert" href="{% url 'job_seeker_signup' %}" style="border-radius: 4rem;">Зарегистрироваться</span>
+                    <a class="btn btn-invert" id="register-btn" href="{% if user_type == 'employer' %}{% url 'employer_signup' %}{% else %}{% url 'job_seeker_signup' %}{% endif %}" style="border-radius: 4rem;">Зарегистрироваться</span>
                     <a class="btn learn-more" href="{% url 'login' %}" style="border-radius: 4rem;">Войти</a></div>
                 {% else %}
                     <a class="nav-link" href="{% url 'profile' %}">
-                        <span class="user-name" style="color: #16A3FF;font-weight: 600;font-size: 18px;font-family: 'Helvetica';">{{ user.username }}</span>
+                        <span class="user-name" style="color: #ffffff;font-weight: 600;font-size: 18px;font-family: 'Helvetica';">{{ user.username }}</span>
                         {% if user.profile_picture %}
                             <img class="user-avatar" src="{{ user.profile_picture.url }}" alt="Фото профиля">
                         {% else %}
@@ -61,6 +62,7 @@
                     {% endif %}
                     </a>
                 {% endif %}
+                </div>
             </div>
         </div>
     </div>

@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -8,7 +9,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.response import Response
 
 from jobs.models import Job
-from .forms import EmployerSignUpForm, JobSeekerSignUpForm, UserProfileForm, SeekerProfileForm, EmployerProfileForm
+from .forms import EmployerSignUpForm, JobSeekerSignUpForm, UserProfileForm, SeekerProfileForm, EmployerProfileForm, UserLoginForm
 from .serializers import EmployerSerializer, JobSeekerSerializer, UserSerializer
 from .models import JobSeeker, Employer, User
 
@@ -18,7 +19,16 @@ from .models import JobSeeker, Employer, User
 # -------------------------
 
 
+def set_user_type(request, user_type):
+    logout(request)
+    request.session['user_type'] = user_type
+    return redirect('home')
+
+
 def employer_signup(request):
+    context = {
+        'user_type': request.session.get('user_type'),
+    }
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == 'POST':
@@ -27,13 +37,19 @@ def employer_signup(request):
             user = form.save()
             login(request, user)
             jobs = Job.objects.all()
-            return render(request, 'users/home.html', {'jobs': jobs})
+            context['jobs'] = jobs
+            return redirect('home')
     else:
         form = EmployerSignUpForm()
-    return render(request, 'users/register.html', {'form': form})
+
+    context['form'] = form
+    return render(request, 'users/register.html', context)
 
 
 def job_seeker_signup(request):
+    context = {
+        'user_type': request.session.get('user_type'),
+    }
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == 'POST':
@@ -42,30 +58,37 @@ def job_seeker_signup(request):
             user = form.save()
             login(request, user)
             jobs = Job.objects.all()
-            return render(request, 'users/home.html', {'jobs': jobs})
+            context['jobs'] = jobs
+            return redirect('home')
     else:
         form = JobSeekerSignUpForm()
-    return render(request, 'users/register.html', {'form': form})
+
+    context['form'] = form
+    return render(request, 'users/register.html', context)
 
 
 def login_view(request):
+    context = {
+        'user_type': request.session.get('user_type'),
+    }
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = UserLoginForm(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                jobs = Job.objects.all()
-                return render(request, 'users/home.html', {'jobs': jobs})
+                return redirect('home')
             else:
                 form.add_error(None, 'Неверное имя пользователя или пароль.')
     else:
-        form = AuthenticationForm()
-    return render(request, 'users/login.html', {'form': form})
+        form = UserLoginForm()
+
+    context['form'] = form
+    return render(request, 'users/login.html', context)
 
 
 # ---------------
@@ -75,11 +98,18 @@ def login_view(request):
 
 @login_required
 def profile_view(request):
+    
     user = request.user
-
     user_form = UserProfileForm(request.POST or None, request.FILES or None, instance=user)
     seeker_form = SeekerProfileForm(request.POST or None, instance=user.jobseeker_profile) if hasattr(user, 'jobseeker_profile') else None
     employer_form = EmployerProfileForm(request.POST or None, instance=user.employer_profile) if hasattr(user, 'employer_profile') else None
+
+    context = {
+        'user_type': request.session.get('user_type'),
+        'user_form': user_form,
+        'seeker_form': seeker_form,
+        'employer_form': employer_form,
+    }
 
     if request.method == 'POST':
         forms_valid = user_form.is_valid()
@@ -96,11 +126,7 @@ def profile_view(request):
                 employer_form.save()
             return redirect('profile')
 
-    return render(request, 'users/profile.html', {
-        'user_form': user_form,
-        'seeker_form': seeker_form,
-        'employer_form': employer_form,
-    })
+    return render(request, 'users/profile.html', context)
 
 
 def logout_view(request):

@@ -21,24 +21,50 @@
     border-color: #16A3FF;
 }
 
-.profile-button {
-    background: #16A3FF;
-    box-shadow: none;
-    border: none
+.btn-primary {
+  box-shadow: none;
+  padding: 12px 16px;
+  background: #16A3FF;
+  border: 2px solid #16A3FF;
+  border-radius: 4rem;
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 16px 0;
+  cursor: pointer;
+  transition: all .3s;
+  text-decoration: none !important;
 }
 
-.profile-button:hover {
-    background: #16A3FF
+.btn-primary:hover {
+  background: transparent !important;
+  color: #16A3FF !important;
+  border-color: #16A3FF!important;
 }
 
-.profile-button:focus {
-    background: #16A3FF;
-    box-shadow: none
+.rounded-circle{
+  width: 150px;
+  height: 150px;
 }
 
-.profile-button:active {
-    background: #16A3FF;
-    box-shadow: none
+.btn-exit{
+  background-color: transparent;
+  border-color: #ff4646;
+  color: #ff4646;
+  box-shadow: none;
+  padding: 12px 16px;
+  border-radius: 4rem;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 16px 0;
+  cursor: pointer;
+  transition: all .3s;
+  text-decoration: none !important;
+}
+
+.btn-exit:hover{
+  background-color: #ff4646 !important;
+  color: #fff !important;
 }
 
 .back:hover {
@@ -120,8 +146,10 @@
                         {% endif %}
                       {% endif %}
                   </div>
-                  <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Сохранить изменения</button></div>
-                  <a class="btn btn-primary" href="{% url 'logout' %}">Выйти</a>
+                  <div class="mt-5 text-center" style="display: flex;justify-content: center;gap: 12px;">
+                    <button class="btn btn-primary profile-button" type="submit">Сохранить изменения</button>
+                    <a class="btn btn-exit" href="{% url 'logout' %}">Выйти</a>
+                  </div>
             </div>
         </div>
         <div class="col-md-4">

@@ -5,17 +5,17 @@
 {% block additionals %}
 <script>
   const isSuper = "{{ user.is_superuser }}" === "True";
-  console.log(isSuper);
+  // console.log(isSuper);
   const isAuthenticated = "{{ user.is_authenticated }}" === "True";
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
   const userId = parseInt("{{ user.id }}");
-  console.log(userId);
+  // console.log(userId);
   const userType = isAuthenticated ? "{{ user.user_type }}" : None;
-  console.log(userType);
+  // console.log(userType);
   const featuredJobs = isAuthenticated ? JSON.parse("{{ featured_jobs }}") : None;
-  console.log(featuredJobs);
+  // console.log(featuredJobs);
   const respondedJobs = isAuthenticated ? JSON.parse("{{ responded_jobs }}") : None;
-  console.log(respondedJobs);
+  // console.log(respondedJobs);
 </script>
 {% endblock %}
 
@@ -27,23 +27,17 @@
         <input id="search-input" type="text" placeholder="Поиск вакансий...">
         <select id="industry-filter">
             <option value="">Все отрасли</option>
-            <option value="IT">IT</option>
-            <option value="Продажи">Продажи</option>
-            <option value="Маркетинг">Маркетинг</option>
-            <option value="Финансы">Финансы</option>
-            <option value="HR">HR</option>
-            <!-- Добавьте другие отрасли по необходимости -->
+            {% for industry in industries %}
+              <option value="{{industry}}">{{industry}}</option>
+            {% endfor %}
         </select>
         <select id="city-filter">
             <option value="">Все города</option>
-            <option value="Москва">Москва</option>
-            <option value="Санкт-Петербург">Санкт-Петербург</option>
-            <option value="Екатеринбург">Екатеринбург</option>
-            <option value="Новосибирск">Новосибирск</option>
-            <option value="Красноярск">Красноярск</option>
-            <!-- Добавьте другие города по необходимости -->
+            {% for city in cities %}
+              <option value="{{city}}">{{city}}</option>
+            {% endfor %}
         </select>
-        <button onclick="searchJobs()"><i class="fi fi-br-search"></i></button>
+        <button onclick="searchJobs('/jobs/api/jobs/search/')"><i class="fi fi-br-search"></i></button>
     </div>
     </div>
 
@@ -84,5 +78,10 @@
 <script src="{% static 'users/js/search.js' %}"></script>
 <script>
   document.addEventListener('DOMContentLoaded', loadAllData('/jobs/api/jobs/all/'));
+  document.getElementById('search-input').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        searchJobs('/jobs/api/jobs/search/');
+    }
+});
 </script>
 {% endblock %}

@@ -12,7 +12,9 @@ from jobs.models import Job, Response, Feature
 
 def home_view(request):
     jobs = Job.objects.all()
-    
+    cities = Job.objects.values_list('location', flat=True).distinct()
+    industries = Job.objects.values_list('industry', flat=True).distinct()
+
     context = {
         'jobs': jobs,
         'responded_jobs': [],
@@ -32,6 +34,11 @@ def home_view(request):
             user_features = []
         
         featured_jobs = [feature.job.id for feature in user_features]
+        
         context['featured_jobs'] = json.dumps(featured_jobs)
+        
+    context['cities'] = cities
+    context['industries'] = industries
+    context['user_type'] = request.session.get('user_type', 'seeker')
 
     return render(request, 'users/home.html', context)

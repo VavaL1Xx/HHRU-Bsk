@@ -13,29 +13,29 @@ class JobForm(forms.ModelForm):
         fields = [
             'title',
             'industry',
-            'requirements',
+            'skills',
             'salary',
             'contact_email',
             'location',
             'description',
             'employment_type',
         ]
+        
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Заголовок вакансии'}),
             'industry': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Выберите отрасль'}),
-            'requirements': forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Ваши требования'}),
+            'skills': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Выберите навыки'}),
             'salary': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Заработная плата'}),
-            'contact_email': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Контактный адрес почты'}),
+            'contact_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Контактный адрес почты'}),
             'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Место поиска'}),
             'description': forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Описание для вакансии'}),
-            'employerment_type': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Тип занятости'}),
+            'employment_type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Тип занятости'}),
         }
 
     def __init__(self, *args, **kwargs):
         super(JobForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-         # Добавляем пустую опцию для поля industry
         self.fields['industry'].empty_label = "Выберите категорию"
         self.fields['industry'].widget.attrs['class'] += ' select-placeholder'
         

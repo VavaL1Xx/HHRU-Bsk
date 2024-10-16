@@ -5,6 +5,14 @@ from django.urls import reverse
 
 from users.models import Employer, JobSeeker, User
 
+
+class Skill(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Job(models.Model):
 
     JOB_TYPE_CHOICES = (
@@ -24,9 +32,9 @@ class Job(models.Model):
     title = models.CharField(verbose_name="Наименование вакансии", max_length=255)
     industry = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, verbose_name="Категория")
     employer = models.ForeignKey(Employer, verbose_name="Работодатель", on_delete=models.CASCADE, related_name='empl')
-    requirements = models.TextField(verbose_name="Требования", blank=True)
+    skills = models.ManyToManyField(Skill, related_name='vacancies', blank=False)
     salary = models.CharField(verbose_name="Зарплата", max_length=255)
-    
+
     contact_email = models.EmailField(verbose_name="Контактный Email", blank=True)
     location = models.CharField(verbose_name="Место (Адрес)", max_length=255)
     description = models.TextField(verbose_name="Описание")
@@ -64,3 +72,4 @@ class Response(models.Model):
 class Feature(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='feature_job')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='feature')
+    

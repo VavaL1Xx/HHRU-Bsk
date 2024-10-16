@@ -2,28 +2,88 @@
 
 {% block title %}Регистрация профиля{% endblock %}
 
+{% block additionals %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+
+<style>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js');
+
+body {
+  background: #007bff;
+  background: linear-gradient(to right, #0062E6, #33AEFF);
+}
+
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+}
+
+.btn-google {
+  color: white !important;
+  background-color: #ea4335;
+}
+
+.btn-facebook {
+  color: white !important;
+  background-color: #3b5998;
+}
+
+input{
+    width: 100%;
+}
+
+</style>
+{% endblock %}
+
 {% block content %}
-    <div class="register">
-        <div class="register-content" style="text-align:center;">
-            <h2 class="title">Регистрация</h2>
-            <a class="advice" href="{% url 'login' %}">Есть аккаунт?</a>
-            <form method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-auth">Зарегистрироваться</button>
-            </form>
-        </div>
-    </div>
-    <script>
-        fr1 = document.getElementById("id_username");
-        fr1.placeholder = "Логин";
-        fr2 = document.getElementById("id_password1");
-        fr2.placeholder = "Пароль";
-        fr4 = document.getElementById("id_password2");
-        fr4.placeholder = "Подтвердите пароль";
-        fr3 = document.getElementById("id_email");
-        fr3.placeholder = "Почта";
-        fr5 = document.getElementById("id_company_name");
-        fr5.placeholder = "Наименование компании";
-    </script>
+    <div class="container" style="display: flex;justify-content: center;align-items: center;">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+              <div class="card border-0 shadow rounded-3 my-5" style="border-radius: 24px;">
+                <div class="card-body p-4 p-sm-5" style="border-radius: 32px;">
+                  <div class="md-5" style="text-align: center;margin-bottom: 2rem !important;">
+                      <h5 class="card-title text-center fw-light fs-5" style="font-size: 26px;">Регистрация {% if user_type == 'employer' %}работодателя{% else %}соискателя{% endif %}</h5>
+                      <a class="advice" href="{% url 'login' %}">Есть аккаунт?</a>
+                  </div>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <label class="labels">Логин</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label class="labels">Наименование компании</label>
+                        {{ form.company_name }}
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label class="labels">ИНН</label>
+                        {{ form.inn }}
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label class="labels">Отрасль</label>
+                        {{ form.industry }}
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label class="labels">Пароль</label>
+                        {{ form.password1 }}
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label class="labels">Подтверждение пароля</label>
+                        {{ form.password2 }}
+                    </div>
+                    <div class="d-grid">
+                        <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit" style="width: 100%;">Зарегистрироваться</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
 {% endblock %}
