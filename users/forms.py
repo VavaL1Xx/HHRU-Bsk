@@ -46,7 +46,7 @@ class EmployerSignUpForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.user_type = 'employer'
+        user.user_type = User.USER_TYPE_CHOICES[0][0]
         if commit:
             user.save()
             Employer.objects.create(
@@ -59,17 +59,37 @@ class EmployerSignUpForm(UserCreationForm):
 
 
 class JobSeekerSignUpForm(UserCreationForm):
-    
+
+    full_name = forms.CharField(
+        label="ФИО",
+        widget=forms.TextInput(attrs={'placeholder': 'Введите ваше полное имя', 'class': 'form-control'})
+    )
+    education = forms.CharField(
+        label="Ваше образование",
+        widget=forms.TextInput(attrs={'placeholder': 'Уровень вашего образования', 'class': 'form-control'})
+    )
+
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username', 'full_name', 'education', 'email', 'password1', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'placeholder': 'Введите логин', 'class': 'form-control'})
+        self.fields['email'].widget.attrs.update({'placeholder': 'Введите email', 'class': 'form-control'})
+        self.fields['password1'].widget.attrs.update({'placeholder': 'Введите пароль', 'class': 'form-control'})
+        self.fields['password2'].widget.attrs.update({'placeholder': 'Подтвердите пароль', 'class': 'form-control'})
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.user_type = 'seeker'
+        user.user_type = User.USER_TYPE_CHOICES[1][0]
         if commit:
             user.save()
-            JobSeeker.objects.create(user=user)
+            JobSeeker.objects.create(
+                user=user,
+                full_name=self.cleaned_data['full_name'],
+                education=self.cleaned_data['education'],
+            )
         return user
     
 
@@ -101,7 +121,7 @@ class SeekerProfileForm(forms.ModelForm):
         widgets = {
             'education': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ваше образование'}),
             'experience': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ваш опыт работы'}),
-            'skills': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ваши навыки'}),
+            'skills': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Ваши навыки'}),
             'desired_job_type': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Кем вы хотите работать'}),
             'desired_salary': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ваши зарплатные ожидания'}),
             'desired_location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Желаемое место работы'}),

@@ -1,9 +1,7 @@
 from django.db import models
-
-# Create your models here.
-
 from django.contrib.auth.models import AbstractUser
-from django.db import models
+
+from manager.models import Skill
 
 
 class User(AbstractUser):
@@ -14,7 +12,7 @@ class User(AbstractUser):
     region = models.CharField(verbose_name='Регион', max_length=255, blank=True, null=True, default='')
     country = models.CharField(verbose_name='Страна',max_length=255, blank=True, null=True, default='')
     phone_number = models.CharField(verbose_name='Номер телефона', max_length=20, blank=True, null=True, default='')
-    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='seeker')
+    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default=USER_TYPE_CHOICES[0][1])
     date_of_registration = models.DateTimeField(verbose_name='Дата регистрации', auto_now_add=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, verbose_name="Фотография профиля")
 
@@ -26,6 +24,7 @@ class Employer(models.Model):
     industry = models.CharField(max_length=255, verbose_name="Отрасль")
     company_address = models.CharField(verbose_name='Адрес компании', max_length=255, blank=True, null=True)
     website = models.URLField(verbose_name='Сайт', blank=True, null=True)
+    rating = models.DecimalField(verbose_name="Рейтинг", max_digits=5, decimal_places=5, default=0)
 
     company_description = models.TextField(verbose_name="Описание компании", blank=True, null=True)
 
@@ -35,7 +34,9 @@ class Employer(models.Model):
 
 class JobSeeker(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='jobseeker_profile')
-    skills = models.TextField(verbose_name="Навыки", blank=True, null=True)
+    full_name = models.CharField(verbose_name="ФИО", max_length=255)
+    # skills = models.TextField(verbose_name="Навыки", blank=True, null=True)
+    skills = models.ManyToManyField(Skill, related_name='users', blank=False)
     education = models.CharField(max_length=255, verbose_name="Образование", blank=True, null=True)
     experience = models.TextField(verbose_name="Опыт работы", blank=True, null=True)
     

@@ -14,11 +14,11 @@ urlpatterns = [
     path('api/jobs/all/', views.all_jobs, name='all_jobs'),
     path('api/jobs/<int:pk>/', views.JobDetail.as_view(), name='job-detail'),
     
-    path('api/responses/all/', views.all_responses, name='all_responses'),
-    path('api/responses/<int:pk>/', views.ResponseDetail.as_view(), name='response-detail'),
+    path('api/responses/<int:pk>/', views.all_responses, name='all_responses'),
+    path('api/responses/<int:pk>/detail', views.ResponseDetail.as_view(), name='response-detail'),
     
     path('api/features/<int:pk>/', views.all_features, name='feature-detail'),
-    path('api/features/search/', views.search_features, name='feature-detail'),
+    path('api/features/<int:pk>/search/', views.search_features, name='feature-detail'),
     
     # URL для Django
 

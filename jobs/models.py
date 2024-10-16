@@ -4,14 +4,7 @@ from django.urls import reverse
 # Create your models here.
 
 from users.models import Employer, JobSeeker, User
-
-
-class Skill(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return self.name
-
+from manager.models import Skill
 
 class Job(models.Model):
 
@@ -55,7 +48,7 @@ class Response(models.Model):
     STATUS_CHOICES = [('pending', 'На рассмотрении'), ('accepted', 'Принят'), ('rejected', 'Отклонен')]
 
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='responses')
-    job_seeker = models.ForeignKey(JobSeeker, on_delete=models.CASCADE, related_name='responses')
+    job_seeker = models.ForeignKey(JobSeeker, on_delete=models.CASCADE, related_name='seeker')
     date_of_response = models.DateTimeField(verbose_name='Дата отклика', auto_now_add=True)
     
     cover_letter = models.TextField(verbose_name="Сопроводительное письмо", blank=True, null=True)

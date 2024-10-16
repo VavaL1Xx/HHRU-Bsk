@@ -57,18 +57,29 @@ input{
                         <label class="labels">Логин</label>
                         {{ form.username }}
                     </div>
-                    <div class="form-floating mb-3">
-                        <label class="labels">Наименование компании</label>
-                        {{ form.company_name }}
-                    </div>
-                    <div class="form-floating mb-3">
-                        <label class="labels">ИНН</label>
-                        {{ form.inn }}
-                    </div>
-                    <div class="form-floating mb-3">
-                        <label class="labels">Отрасль</label>
-                        {{ form.industry }}
-                    </div>
+                    {% if user_type == 'employer' %}
+                      <div class="form-floating mb-3">
+                          <label class="labels">Наименование компании</label>
+                          {{ form.company_name }}
+                      </div>
+                      <div class="form-floating mb-3">
+                          <label class="labels">ИНН</label>
+                          {{ form.inn }}
+                      </div>
+                      <div class="form-floating mb-3">
+                          <label class="labels">Отрасль</label>
+                          {{ form.industry }}
+                      </div>
+                    {% elif user_type == 'seeker' %}
+                      <div class="form-floating mb-3">
+                        <label class="labels">Ваше ФИО</label>
+                        {{ form.full_name }}
+                      </div>
+                      <div class="form-floating mb-3">
+                          <label class="labels">Образование</label>
+                          {{ form.education }}
+                      </div>
+                    {% endif %}
                     <div class="form-floating mb-3">
                         <label class="labels">Пароль</label>
                         {{ form.password1 }}

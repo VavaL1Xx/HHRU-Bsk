@@ -2,6 +2,9 @@
 {% load static %}
 {% block title %}Список откликнувшихся{% endblock %}
 
+{% block additionals %}
+{% endblock %}
+
 {% block content %}
 <div class="container">
   <div class="vacancy-list" id="vacancy-list">
@@ -17,8 +20,8 @@
           <div class="vacancy-main-info">
             <div class="main-side">
               <div class="vacancy-image">
-                  {% if resp.job.employer.user.profile_picture %}
-                    <img src="{{ job.employer.user.profile_picture.url }}" alt="Фото профиля">
+                  {% if resp.job_seeker.user.profile_picture %}
+                    <img src="{{ resp.job_seeker.user.profile_picture.url }}" alt="Фото профиля">
                   {% else %}
                     <img src="{% static 'users/images/user_avatar_default.png' %}" alt="Фото профиля">
                   {% endif %}
@@ -26,21 +29,20 @@
                 <div>
                   <p class="item-date">{{ resp.date_of_response }}</p>
                   <h4>{{ resp.job.title }}</h4>
-                  <p class="company">{{ resp.employer }}</p>
+                  <p class="company">{{ resp.job_seeker.full_name }}</p>
                 </div>
             </div>
             <div class="vacancy-side-info">
             </div>
           </div>
-          <p class="description">{{ resp.description }}</p>
+          <p class="description">{{ resp.job_seeker.education }}</p>
+          <p class="description">{{ resp.job_seeker.experience }}</p>
           <div class="job-btns-container">
             <div class="btns-block">
+              <a class="btn learn-more" href="#"><i class="fi fi-ss-comment"></i></a>
               <a class="btn learn-more" href="{% url 'job_detail_view' resp.job.id %}">Подробнее</a>
-              <a class="btn learn-more" href="{% url 'job_detail_view' resp.job.id %}">Подробнее</a>
-              <a class="btn learn-more" href="{% url 'job_detail_view' resp.job.id %}">Подробнее</a>
-            </div>
-            <div>
-              <p class="salary">{{ resp.job.salary }}</p>
+              <a class="btn learn-more green" href="#" style="padding-inline: 14px;"><i class="fi fi-br-check"></i></a>
+              <a class="btn learn-more red" href="#" style="padding-inline: 14px;"><i class="fi fi-br-cross"></i></a>
             </div>
           </div>
         </div>

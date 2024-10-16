@@ -80,8 +80,8 @@ def response_create_view(request, job_id):
 @login_required
 def responses_list_view(request):
     if request.user.user_type == 'employer':
-        jobs = resp.objects.filter(job__employer=request.user.id)
-        return render(request, 'jobs/list-of-resps.html', {'resps': jobs})
+        resps = resp.objects.filter(job__employer=request.user.id)
+        return render(request, 'jobs/list-of-resps.html', {'resps': resps})
     return redirect('home')
 
 
@@ -216,12 +216,14 @@ def search_jobs(request):
 
 
 @api_view(['GET'])
-def search_features(request):
+def search_features(request, pk):
     query = request.GET.get('q', '')
     industry = request.GET.get('industry', '')
     city = request.GET.get('city', '')
 
-    jobs = Feature.objects.filter(
+    jobs = Feature.objects.filter(user=pk)
+
+    jobs = jobs.filter(
         Q(job__title__icontains=query) | Q(job__description__icontains=query) | Q(job__employer__company_name__icontains=query)
     )
     if industry:

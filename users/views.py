@@ -36,8 +36,6 @@ def employer_signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            jobs = Job.objects.all()
-            context['jobs'] = jobs
             return redirect('home')
     else:
         form = EmployerSignUpForm()
@@ -57,8 +55,6 @@ def job_seeker_signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            jobs = Job.objects.all()
-            context['jobs'] = jobs
             return redirect('home')
     else:
         form = JobSeekerSignUpForm()
@@ -111,11 +107,14 @@ def profile_view(request):
         'employer_form': employer_form,
     }
 
+    if user.user_type == User.USER_TYPE_CHOICES[1][0]:
+        context['skills'] = user.jobseeker_profile.skills.all()
+
     if request.method == 'POST':
         forms_valid = user_form.is_valid()
-        if user.user_type == 'seeker' and seeker_form:
+        if user.user_type == User.USER_TYPE_CHOICES[0][0] and seeker_form:
             forms_valid = forms_valid and seeker_form.is_valid()
-        elif user.user_type == 'employer' and employer_form:
+        elif user.user_type == User.USER_TYPE_CHOICES[1][0] and employer_form:
             forms_valid = forms_valid and employer_form.is_valid()
 
         if forms_valid:

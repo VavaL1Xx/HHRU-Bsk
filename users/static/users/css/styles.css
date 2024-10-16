@@ -217,7 +217,6 @@ input:-webkit-autofill:active{
   align-items: center;
   margin-right: 20px;
   justify-content: center;
-  width: 64px;
 }
 
 .vacancy-image img{
@@ -368,20 +367,29 @@ input:-webkit-autofill:active{
   display: flex;
 }
 
-.btn.responded{
+.btn.green-invert{
   border-color: #1bba20 !important;
   color: #1bba20!important;
 }
-.btn.responded:hover{
+.btn.green-invert:hover{
   background-color: #1bba20!important;
 }
 
-.btn.featured{
+.btn.green{
+  border-color: #1bba20;
+  background-color: #1bba20;
+}
+
+.btn.green:hover{
+  color: #1bba20 !important;
+}
+
+.btn.red{
   border-color: #ff4646;
   background-color: #ff4646;
 }
 
-.btn.featured:hover{
+.btn.red:hover{
   color: #ff4646 !important;
 }
 

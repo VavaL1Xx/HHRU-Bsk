@@ -85,7 +85,7 @@ function renderVac(job, vacancyList) {
             </div>
             <div class="vacancy-side-info">
               <span style="display:flex;justify-content:end;width:100%;gap: 8px;"><i class="fi fi-ss-land-layer-location"></i>${job['location']}</span>
-              <span>${job['resps']} откликов</span>
+              <span style="text-align: right;">${job['resps']} откликов</span>
             </div>
           </div>
           <p class="description" id="skills-${job['id']}" style="margin-bottom:0;display:flex;gap:12px;flex-wrap:wrap;"></p>
@@ -117,7 +117,7 @@ function renderVac(job, vacancyList) {
       btns_lst.innerHTML += `<a class="btn learn-more" href="/jobs/create/feature/${job['id']}"><i class="fi fi-ss-heart"></i></a>`
     }
     else {
-      btns_lst.innerHTML += `<a class="btn learn-more featured" href="/jobs/delete/feature/${job['id']}"><i class="fi fi-ss-heart"></i></a>`
+      btns_lst.innerHTML += `<a class="btn learn-more red" href="/jobs/delete/feature/${job['id']}"><i class="fi fi-ss-heart"></i></a>`
     }
   }
 
@@ -126,7 +126,7 @@ function renderVac(job, vacancyList) {
   if (!isSuper && isAuthenticated) {
     if (userType == 'seeker') {
       if (respondedJobs.includes(job['id'])) {
-        btns_lst.innerHTML += `<span class="btn btn-invert responded">Вы откликнулись</span>`
+        btns_lst.innerHTML += `<span class="btn btn-invert green-invert">Вы откликнулись</span>`
       }
       else {
         btns_lst.innerHTML += `<a class="btn btn-invert" href="/jobs/create/response/${job['id']}">Откликнуться</a>`

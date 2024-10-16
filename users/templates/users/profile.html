@@ -100,6 +100,13 @@
               <span class="font-weight-bold">{{user.username}}</span>
               <span class="text-black-50">Время захода<br>{{user.last_login}}</span></div>
               {{user_form.profile_picture}}
+              {% if user.user_type == 'seeker' %} 
+                <p class="description" style="margin-top: 32px;-webkit-line-clamp: unset;display: flex;gap: 16px;flex-wrap: wrap;">
+                  {% for skill in skills %}
+                    <span class="alt-info">{{skill.name}}</span>
+                  {% endfor %}
+                </p>
+              {% endif %}
             </div>
             <div class="col-md-5 border-right">
               <div class="p-3 py-5">
