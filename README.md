@@ -1,15 +1,12 @@
-Создаёте виртуальное окружение python
--
-python -m venv .venv
+## Описание
 
-Активируете виртуальное окружение
--
-.venv/Scripts/activate
+Сайт по поиску работы, аналогичный HHRU. Написан на django. 
+Для запуска необходимо выполнить следующие команды:
 
-Устанавливаете все библиотеки
--
-pip install -r requirements.txt
-
-Запускаете Django-сервер
--
-python manage.py runserver
+1) python -m venv .venv
+2) .venv/Scripts/activate
+3) pip install -r requirements.txt
+4) python manage.py makemigrations
+5) python manage.py migrate
+6) python manage.py createsuperuser
+7) python manage.py runserver
