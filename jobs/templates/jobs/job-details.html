@@ -1,20 +1,49 @@
 {% extends 'users/base.html' %}
+{% load static %}
 
 {% block title %}Вакансия {{ job.title }}{% endblock %}
 
 {% block content %}
-<div class="container white-background">
-<div class="job-details">
-    <div class="job-content" style="text-align:center;">
-        <h1>{{ job.title }}</h1>
-        <p><strong>Компания:</strong> {{ job.employer }}</p>
-        <p><strong>Местоположение:</strong> {{ job.location }}</p>
-        <p><strong>Зарплата:</strong> {{ job.salary }}</p>
-        <p><strong>Описание:</strong> {{ job.description }}</p>
-        <p><strong>Дата публикации:</strong> {{ job.date_of_creation }}</p>
-    
-        <a href="{% url 'home' %}">Вернуться к списку вакансий</a> 
+<div class="container white-background" style="box-shadow: none; border-radius: 0;padding: 0;">
+    <div style="display: flex;justify-content: space-around;">
+        <div class="job-details">
+            <div class="job-content vacancy-item" style="text-align:center;">
+                <h1 class="job-title">{{ job.title }}</h1>
+                <p class="job-salary">Зарплата {{ job.salary }}</p>
+                <p style="text-align: left;">На данный момент откликнулось {{ job.resps }} человек</p>
+                <div style="display: flex;">
+                    <a class="btn learn-more" href="/jobs/create/feature/{{job.id}}"><i class="fi fi-ss-heart"></i></a>
+                    <a class="btn btn-invert close" href="/jobs/delete/job/{{job.id}}">Закрыть</a>
+                    <a class="btn btn-invert" href="/jobs/create/response/{{job.id }}">Откликнуться</a>
+                    <span class="btn btn-invert green-invert">Вы откликнулись</span>
+                </div>
+            </div>
+        </div>
+        <div class="company-info vacancy-item">
+            <div class="vacancy-image" style="justify-content: start;">
+                {% if job.employer.user.profile_picture %}
+                  <img src="{{ job.employer.user.profile_picture.url }}" alt="Фото профиля">
+                {% else %}
+                  <img src="{% static 'users/images/user_avatar_default.png' %}" alt="Фото профиля">
+                {% endif %}
+            </div>
+            <p class="comp-name">{{ job.employer.company_name }}</p>
+            <p class="comp-rating">
+                <span>
+                    <i class="fi fi-ss-star"></i>
+                    <i class="fi fi-ss-star"></i>
+                    <i class="fi fi-ss-star"></i>
+                    <i class="fi fi-ss-star"></i>
+                    <i class="fi fi-ss-star"></i>
+                    <!-- <i class="fi fi-ts-star-sharp-half-stroke"></i>
+                    <i class="fi fi-rs-star"></i> -->
+                </span>
+                <span style="font-size: 14px;display: flex;align-items: center;">
+                    Нет отзывов
+                </span>
+            </p>
+            <p class="comp-address">{{ job.employer.company_address }}</p>
+        </div>
     </div>
-</div>
 </div>
 {% endblock %}

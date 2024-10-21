@@ -1,6 +1,7 @@
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css');
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css');
 
 .container {
   max-width: 1200px;
@@ -286,6 +287,50 @@ input:-webkit-autofill:active{
 
 .vacancy-item a:hover {
   text-decoration: underline;
+}
+
+.job-details{
+  width: 65%;
+}
+
+.job-content .job-title{
+  text-align: left;
+  font-weight: 600;
+  color: #16a3ff;
+  font-size: 32px;
+  margin-bottom: 0;
+}
+
+.job-content .job-salary{
+  font-size: 20px;
+  text-align: left;
+}
+
+.company-info{
+  width: 25%;
+  padding: 32px;
+  height: fit-content;
+}
+
+.company-info .comp-name{
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 0;
+  font-family: 'Helvetica';
+}
+
+.company-info .comp-rating{
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+  font-size: 24px;
+  color: #ababab;
+}
+
+.company-info .comp-address{
+  font-family: 'Helvetica';
+  font-size: 18px;
+  margin: 0;
 }
 
 .footer {
