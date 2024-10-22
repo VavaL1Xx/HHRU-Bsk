@@ -5,17 +5,37 @@
 
 {% block content %}
 <div class="container white-background" style="box-shadow: none; border-radius: 0;padding: 0;">
-    <div style="display: flex;justify-content: space-around;">
+    <div style="display: flex;justify-content: space-between;">
         <div class="job-details">
             <div class="job-content vacancy-item" style="text-align:center;">
-                <h1 class="job-title">{{ job.title }}</h1>
-                <p class="job-salary">Зарплата {{ job.salary }}</p>
-                <p style="text-align: left;">На данный момент откликнулось {{ job.resps }} человек</p>
-                <div style="display: flex;">
-                    <a class="btn learn-more" href="/jobs/create/feature/{{job.id}}"><i class="fi fi-ss-heart"></i></a>
-                    <a class="btn btn-invert close" href="/jobs/delete/job/{{job.id}}">Закрыть</a>
-                    <a class="btn btn-invert" href="/jobs/create/response/{{job.id }}">Откликнуться</a>
-                    <span class="btn btn-invert green-invert">Вы откликнулись</span>
+                <div style="justify-content: space-between;align-items: center;display: flex;margin-top: 12px;">
+                    <h1 class="job-title" style="font-size: 24px;margin-top: 0;">{{ job.title }}</h1>
+                    <div class="vacancy-side-info">
+                        <span style="display:flex;justify-content:end;gap: 8px;min-width: 25%;color:#a3a3a3;"><i class="fi fi-ss-land-layer-location"></i>{{job.location}}</span>
+                        <span style="text-align: right;">{{ job.resps }} откликов</span>
+                    </div>
+                </div>
+                <p class="job-salary" style="margin-bottom: 0;"><i class="fi fi-ss-sack"></i> Зарплата {{ job.salary }}</p>
+                <p style="font-size: 20px;margin-top: 4px;text-align: left;"><i class="fi fi-bs-tools"></i> Требуемый опыт работы {{job.work_exp}}</p>
+                <div class="job-btns-container">
+                    <div class="btns-block">
+                        {% if is_featured %}
+                        <a class="btn learn-more angles red" href="/jobs/delete/feature/{{job.id}}"><i class="fi fi-ss-heart"></i></a>
+                        {% else %}    
+                        <a class="btn learn-more angles" href="/jobs/create/feature/{{job.id}}"><i class="fi fi-ss-heart"></i></a>
+                        {% endif %}
+                        <a class="btn learn-more angles" href="#">Контакты</a>
+                        {% if user_type == 'employer' and is_you %}
+                            <a class="btn btn-invert close angles" href="/jobs/delete/job/{{job.id}}">Закрыть</a>
+                        {% endif %}
+                        {% if user_type == 'seeker' %}
+                            {% if responded %}
+                                <span class="btn btn-invert green-invert angles">Вы откликнулись</span>
+                            {% else %}    
+                                <a class="btn btn-invert angles" href="/jobs/create/response/{{job.id }}">Откликнуться</a>
+                            {% endif %}    
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,6 +63,30 @@
                 </span>
             </p>
             <p class="comp-address">{{ job.employer.company_address }}</p>
+        </div>
+    </div>
+
+    <div style="display: flex;justify-content: space-between;">
+        <div class="job-details">
+            <div class="job-content vacancy-item">
+                <div><h2 class="title" style="color: #555">Описание вакансии</h2></div>
+                <div>
+                    <p class="description" style="-webkit-line-clamp: unset;">
+                        {{ job.description }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="company-info vacancy-item">
+            <div style="font-size: 24px;font-weight: 600;color: #555;margin-bottom: 16px;">Требуемые навыки</div>
+            <div id="skills-{{job.id}}" style="display: flex;flex-wrap: wrap;gap: 12px;">
+                {% for skill in skills %}
+                    <span class="alt-info">{{skill.name}}</span>
+                {% endfor %}
+                {% if not skills %}
+                    <span class="alt-info">Нет навыков</span>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

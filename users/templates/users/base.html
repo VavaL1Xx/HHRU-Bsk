@@ -11,7 +11,8 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css'>
     {% block additionals %}
     {% endblock %}
 </head>
@@ -25,10 +26,6 @@
                     <li><a class="nav-link {% if user_type == 'employer' %}sel{% endif %}" href="{% if not user_type == 'employer' %}{% url 'set_user_type' 'employer' %}{% endif %}" id="employer-btn" href="#">Работодатель</a></li>
                     {% if user.is_authenticated %}
                     <li><a class="nav-link" href="{% url 'features_list_view' %}">Избранное</a></li>
-                    {% endif %}
-                    {% if user.user_type == 'employer' %}
-                        <li><a class="nav-link" href="{% url 'create_job' %}">Разместить вакансию</a></li>
-                        <li><a class="nav-link" href="{% url 'responses_list_view' %}">Отклики</a></li>
                     {% endif %}
                 </ul>
             </nav>

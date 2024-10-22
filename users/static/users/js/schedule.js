@@ -121,7 +121,7 @@ function renderVac(job, vacancyList) {
     }
   }
 
-  btns_lst.innerHTML += `<a class="btn learn-more" href="jobs/view/job/${job['id']}/">Подробнее</a>`
+  btns_lst.innerHTML += `<a class="btn learn-more" href="/jobs/view/job/${job['id']}">Подробнее</a>`
 
   if (!isSuper && isAuthenticated) {
     if (userType == 'seeker') {
