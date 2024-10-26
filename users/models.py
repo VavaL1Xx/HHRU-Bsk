@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -24,7 +26,7 @@ class Employer(models.Model):
     industry = models.CharField(max_length=255, verbose_name="Отрасль")
     company_address = models.CharField(verbose_name='Адрес компании', max_length=255, blank=True, null=True)
     website = models.URLField(verbose_name='Сайт', blank=True, null=True)
-    rating = models.DecimalField(verbose_name="Рейтинг", max_digits=5, decimal_places=5, default=0)
+    rating = models.FloatField(verbose_name="Рейтинг", default=.0)
 
     company_description = models.TextField(verbose_name="Описание компании", blank=True, null=True)
 
@@ -51,3 +53,24 @@ class JobSeeker(models.Model):
     def __str__(self):
         return f"{self.user.username}"
     
+
+class Review(models.Model):
+    RATING_CHOICES = [
+        (1, 'Отвратительно'),
+        (2, 'Плохо'),
+        (3, 'Средне'),
+        (4, 'Хорошо'),
+        (5, 'Отлично'),
+    ]
+    
+    employer = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name='emp')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='us')
+    date_of_creation = models.DateTimeField(verbose_name='Дата отзыва', auto_now_add=True)
+    rate = models.IntegerField(choices=RATING_CHOICES, verbose_name='Оценка')
+    message = models.TextField(verbose_name="Отзыв", blank=True, null=True)
+
+
+class Notification(models.Model):
+    destination = models.ForeignKey(User, on_delete=models.CASCADE, related_name='dest')
+    message = models.TextField(verbose_name="Уведомление", blank=True, null=True)
+    is_checked = models.BooleanField(verbose_name="Просмотрена", default=False)

@@ -4,6 +4,10 @@
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css');
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-straight/css/uicons-thin-straight.css');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css');
+
+
 .container {
   max-width: 1200px;
   min-width: 1200px;
@@ -221,6 +225,59 @@ input:-webkit-autofill:active{
   justify-content: center;
 }
 
+.star, .user-rating span{
+  width: 24px;
+  height: 32px;
+  align-items: center;
+  display: flex;
+  color: #ababab;
+}
+
+.user-rating span{
+  font-size: 24px;
+  justify-content: center;
+}
+
+.star i{
+  display: flex;
+  position: absolute;
+}
+
+.bell-notes{
+  display: flex;
+  position: relative;
+  text-decoration: none;
+  align-items: center;
+  color: #fff !important;
+  border: 0;
+  font-size: 24px;
+  height: 64px;
+  justify-content: center;
+  width: 64px;
+  background: transparent;
+  border-radius: 4rem;
+  transition: all 0.5s;
+}
+
+.bell-notes i:nth-child(2){
+  display: none;
+}
+
+.bell-notes:hover{
+  background: #80808070 !important;
+}
+
+.bell-notes:hover i:nth-child(2){
+  display: flex;
+}
+.bell-notes:hover i:nth-child(1){
+  display: none;
+}
+
+.bell-notes i:nth-child(1){
+  display: flex;
+}
+
 .vacancy-image img{
   object-fit: cover;
   height: 80px;
@@ -273,6 +330,13 @@ input:-webkit-autofill:active{
   margin: 0;
 }
 
+.company-info .vacancy-image img{
+  object-fit: cover;
+  height: 112px;
+  width: 112px;
+  border-radius: 4rem;
+}
+
 .vacancy-item .salary {
   color: #16A3FF;
   margin: 0;
@@ -297,13 +361,23 @@ input:-webkit-autofill:active{
 .job-content .job-title{
   text-align: left;
   font-weight: 600;
-  color: #16a3ff;
+  color: #555555;
   font-size: 32px;
   margin-bottom: 0;
 }
 
 .job-content .job-salary{
-  font-size: 20px;
+  font-size: 18px;
+  text-align: left;
+}
+
+.job-content .job-info{
+  margin-top: 28px;
+}
+
+.job-content .job-info-item{
+  font-size: 18px;
+  margin: 0;
   text-align: left;
 }
 
@@ -320,12 +394,12 @@ input:-webkit-autofill:active{
   font-family: 'Helvetica';
 }
 
-.company-info .comp-rating{
+.comp-rating{
   display: flex;
   gap: 8px;
   margin: 8px 0;
   font-size: 24px;
-  color: #ababab;
+  color: #ababab !important;
 }
 
 .company-info .comp-address{
@@ -411,6 +485,7 @@ input:-webkit-autofill:active{
 
 .btn i{
   display: flex;
+  align-items: center;
 }
 
 .btn.green-invert{
@@ -437,6 +512,15 @@ input:-webkit-autofill:active{
 
 .btn.red:hover{
   color: #ff4646 !important;
+}
+
+.btn.yellow-alt{
+  border-color: #ffa611 !important;
+  color: #ffa611 !important;
+}
+.btn.yellow-alt:hover{
+  color: #ffffff !important;
+  background-color: #ffa611 !important;
 }
 
 .btn {
@@ -497,11 +581,11 @@ input:-webkit-autofill:active{
 }
 
 .description{
-  white-space: pre-wrap;
+  white-space: pre-line;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   max-width: 768px;
 }

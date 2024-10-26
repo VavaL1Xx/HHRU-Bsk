@@ -1,5 +1,7 @@
+import pdb
+from django.db.models import Avg
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -9,9 +11,50 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.response import Response
 
 from jobs.models import Job
-from .forms import EmployerSignUpForm, JobSeekerSignUpForm, UserProfileForm, SeekerProfileForm, EmployerProfileForm, UserLoginForm
+from .forms import UserReviewForm, EmployerSignUpForm, JobSeekerSignUpForm, UserProfileForm, SeekerProfileForm, EmployerProfileForm, UserLoginForm
 from .serializers import EmployerSerializer, JobSeekerSerializer, UserSerializer
-from .models import JobSeeker, Employer, User
+from .models import JobSeeker, Employer, User, Review
+
+
+#------------------
+# Оставление отзыва
+#------------------
+
+
+def company_review(request, pk):
+    context = {
+        'user_type': request.session.get('user_type'),
+    }
+    if not request.user.is_authenticated:
+        return redirect('home')
+    
+    employer = get_object_or_404(Employer, user__id=pk)
+
+    try:
+        existing_review = Review.objects.get(employer=employer, user=request.user)
+    except Review.DoesNotExist:
+        existing_review = None
+    
+    if request.method == 'POST':
+        form = UserReviewForm(request.POST, instance=existing_review)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.employer = employer
+            review.save()
+            reviews = Review.objects.filter(employer=employer)
+            if reviews.exists():
+                avg_rating = reviews.aggregate(avg=Avg('rate'))['avg']
+                if avg_rating is not None:
+                    employer.rating = avg_rating
+            employer.save()
+            return redirect(f'/users/view/company/{pk}')
+    else:
+        form = UserReviewForm(instance=existing_review)
+    
+    context['employer'] = employer
+    context['form'] = form
+    return render(request, 'users/review.html', context)
 
 
 # -------------------------
@@ -99,12 +142,15 @@ def profile_view(request):
     user_form = UserProfileForm(request.POST or None, request.FILES or None, instance=user)
     seeker_form = SeekerProfileForm(request.POST or None, instance=user.jobseeker_profile) if hasattr(user, 'jobseeker_profile') else None
     employer_form = EmployerProfileForm(request.POST or None, instance=user.employer_profile) if hasattr(user, 'employer_profile') else None
+    employer = get_object_or_404(Employer, user=request.user)
 
     context = {
         'user_type': request.session.get('user_type'),
         'user_form': user_form,
         'seeker_form': seeker_form,
         'employer_form': employer_form,
+        'employer': employer,
+        'reviews_count': Review.objects.filter(employer=employer).count(),
     }
 
     if user.user_type == User.USER_TYPE_CHOICES[1][0]:
@@ -132,6 +178,21 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
+
+def company_profile(request, pk):
+    context = {
+        'user_type': request.session.get('user_type'),
+    }
+    company = get_object_or_404(Employer, pk=pk)
+    reviews = Review.objects.filter(employer=company)
+    jobs = Job.objects.filter(employer=company)
+    
+    context['employer'] = company
+    context['reviews'] = reviews
+    context['reviews_count'] = reviews.count()
+    context['jobs_count'] = jobs.count()
+
+    return render(request, 'users/company-profile.html', context)
 
 # -------------
 # Views для API

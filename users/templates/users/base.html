@@ -13,6 +13,8 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-straight/css/uicons-thin-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css'>
     {% block additionals %}
     {% endblock %}
 </head>
@@ -39,6 +41,7 @@
                     <div>
                         <img src="/static/users/images/hhrubsk-logo.png" style=" height: 64px;">
                     </div>
+                    <a class="sub-link" href="#">Главная</a>
                     <a class="sub-link" href="{% url 'home' %}">Все вакансии</a>
                     {% if user.is_authenticated and user.user_type == 'employer' %}
                         <a class="sub-link" href="{% url 'responses_list_view' %}">Отклики</a>
@@ -58,6 +61,11 @@
                         {% else %}
                             <img class="user-avatar" src="{% static 'users/images/user_avatar_default.png' %}" alt="Фото профиля">
                     {% endif %}
+                    </a>
+                    <a href="#" class="bell-notes">
+                        <i class="fi fi-ss-bell"></i>
+                        <i class="fi fi-rr-bell"></i>
+                        <div style="width: 12px;height: 12px;border-radius: 32px;top: 16px;right: 20px;position: absolute;background: red;"></div>
                     </a>
                 {% endif %}
                 </div>

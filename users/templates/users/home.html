@@ -5,17 +5,17 @@
 {% block additionals %}
 <script>
   const isSuper = "{{ user.is_superuser }}" === "True";
-  console.log(isSuper);
+  // console.log(isSuper);
   const isAuthenticated = "{{ user.is_authenticated }}" === "True";
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
   const userId = parseInt("{{ user.id }}");
-  console.log(userId);
+  // console.log(userId);
   const userType = isAuthenticated ? "{{ user.user_type }}" : None;
-  console.log(userType);
+  // console.log(userType);
   const featuredJobs = isAuthenticated ? JSON.parse("{{ featured_jobs }}") : None;
-  console.log(featuredJobs);
+  // console.log(featuredJobs);
   const respondedJobs = isAuthenticated ? JSON.parse("{{ responded_jobs }}") : None;
-  console.log(respondedJobs);
+  // console.log(respondedJobs);
 </script>
 {% endblock %}
 

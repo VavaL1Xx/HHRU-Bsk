@@ -13,7 +13,7 @@ from rest_framework import generics
 from .forms import JobForm
 from .serializers import JobSerializer, ResponseSerializer, FeatureSerializer, SkillsSerializer
 from .models import Feature, Skill, Job, Response as resp
-
+from users.models import Review
 
 # -------------------------------------
 # Создание/удаление и просмотр вакансии
@@ -45,7 +45,7 @@ def delete_job(request, job_id):
 
 def job_detail_view(request, job_id):
     job = get_object_or_404(Job, id=job_id)
-    is_featured = Feature.objects.filter(job=job, user=request.user).first()
+    is_featured = Feature.objects.filter(job=job, user=request.user).first() if request.user.is_authenticated else False
     is_you = job.employer.user == request.user
     context = {
         'is_you':is_you,
@@ -55,7 +55,15 @@ def job_detail_view(request, job_id):
         'user_type': request.session.get('user_type'),
     }
     
-    if request.user.user_type == 'seeker':
+    reviews = Review.objects.filter(employer=job.employer)
+    jobs = Job.objects.filter(employer=job.employer)
+    
+    context['employer'] = job.employer
+    context['reviews'] = reviews
+    context['reviews_count'] = reviews.count()
+    context['jobs_count'] = jobs.count()
+
+    if request.user.is_authenticated and request.user.user_type == 'seeker':
         context['responded'] = resp.objects.filter(job=job, job_seeker__user=request.user).first()
 
     return render(request, 'jobs/job-details.html', context)

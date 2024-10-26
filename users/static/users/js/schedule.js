@@ -24,7 +24,6 @@ async function loadAllData(url, extract = false) {
 function renderVacancies(data = [], extract = false) {
   const vacancyList = document.getElementById('vacancy-list-ul');
   vacancyList.innerHTML = '';
-  // console.log(jobs);
 
   quantity = document.getElementById("search-results");
   quantity.innerHTML = "";
