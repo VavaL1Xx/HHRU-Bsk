@@ -1,6 +1,6 @@
 {% extends 'users/base.html' %}
 
-{% block title %}Регистрация профиля{% endblock %}
+{% block title %}Регистрация {% if user_type == 'employer' %}работодателя{% else %}соискателя{% endif %}{% endblock %}
 
 {% block additionals %}
 
@@ -53,9 +53,24 @@ input{
                   </div>
                   <form method="POST">
                     {% csrf_token %}
+                    {% if form.errors %}
+                        <div class="text-danger">
+                            {% for error in form.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                     <div class="form-floating mb-3">
                         <label class="labels">Логин</label>
                         {{ form.username }}
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label class="labels">Почта</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label class="labels">Телефон</label>
+                        {{ form.phone_number }}
                     </div>
                     {% if user_type == 'employer' %}
                       <div class="form-floating mb-3">
@@ -69,6 +84,10 @@ input{
                       <div class="form-floating mb-3">
                           <label class="labels">Отрасль</label>
                           {{ form.industry }}
+                      </div>
+                      <div class="form-floating mb-3">
+                          <label class="labels">Адрес</label>
+                          {{ form.company_address }}
                       </div>
                     {% elif user_type == 'seeker' %}
                       <div class="form-floating mb-3">

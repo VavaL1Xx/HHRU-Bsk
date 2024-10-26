@@ -1,6 +1,21 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import User, Employer, JobSeeker
+from .models import User, Employer, JobSeeker, Review
+
+
+# -----------------
+# Формы для отзывов
+# -----------------
+
+
+class UserReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rate', 'message']
+        widgets = {
+            'rate': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Оценка'}),
+            'message': forms.Textarea(attrs={'rows': 4,'class': 'form-control', 'placeholder': 'Напишите отзыв'}),
+        }
 
 
 # ---------------------
@@ -32,15 +47,23 @@ class EmployerSignUpForm(UserCreationForm):
         label="Отрасль",
         widget=forms.TextInput(attrs={'placeholder': 'Введите отрасль', 'class': 'form-control'})
     )
-
+    company_address = forms.CharField(
+        label="Адрес",
+        widget=forms.TextInput(attrs={'placeholder': 'Введите адрес', 'class': 'form-control'})
+    )
+    phone_number = forms.CharField(
+        label="Номер телефона", 
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите номер телефона'})  # добавляем это поле
+    )
     class Meta:
         model = User
-        fields = ('username', 'company_name', 'inn', 'industry', 'email', 'password1', 'password2')
+        fields = ('username', 'company_name', 'inn', 'industry', 'company_address', 'phone_number', 'email', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({'placeholder': 'Введите логин', 'class': 'form-control'})
         self.fields['email'].widget.attrs.update({'placeholder': 'Введите email', 'class': 'form-control'})
+        self.fields['phone_number'].widget.attrs.update({'placeholder': 'Введите ваш номер', 'class': 'form-control'})
         self.fields['password1'].widget.attrs.update({'placeholder': 'Введите пароль', 'class': 'form-control'})
         self.fields['password2'].widget.attrs.update({'placeholder': 'Подтвердите пароль', 'class': 'form-control'})
 
@@ -54,6 +77,7 @@ class EmployerSignUpForm(UserCreationForm):
                 company_name=self.cleaned_data['company_name'],
                 inn=self.cleaned_data['inn'],
                 industry=self.cleaned_data['industry'],
+                company_address=self.cleaned_data['company_address'],
             )
         return user
 
@@ -71,12 +95,13 @@ class JobSeekerSignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'full_name', 'education', 'email', 'password1', 'password2')
+        fields = ('username', 'full_name', 'education', 'phone_number', 'email', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({'placeholder': 'Введите логин', 'class': 'form-control'})
         self.fields['email'].widget.attrs.update({'placeholder': 'Введите email', 'class': 'form-control'})
+        self.fields['phone_number'].widget.attrs.update({'placeholder': 'Введите ваш номер', 'class': 'form-control'})
         self.fields['password1'].widget.attrs.update({'placeholder': 'Введите пароль', 'class': 'form-control'})
         self.fields['password2'].widget.attrs.update({'placeholder': 'Подтвердите пароль', 'class': 'form-control'})
 

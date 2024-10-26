@@ -28,6 +28,7 @@ class Job(models.Model):
     skills = models.ManyToManyField(Skill, related_name='vacancies', blank=False)
     salary = models.CharField(verbose_name="Зарплата", max_length=255)
 
+    work_exp = models.CharField(verbose_name="Опыт работы", max_length=32, blank=True, null=True)
     contact_email = models.EmailField(verbose_name="Контактный Email", blank=True)
     location = models.CharField(verbose_name="Место (Адрес)", max_length=255)
     description = models.TextField(verbose_name="Описание")

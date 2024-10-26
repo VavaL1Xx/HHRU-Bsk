@@ -17,8 +17,9 @@ class JobForm(forms.ModelForm):
             'salary',
             'contact_email',
             'location',
-            'description',
             'employment_type',
+            'work_exp',
+            'description',
         ]
         
         widgets = {
@@ -28,8 +29,9 @@ class JobForm(forms.ModelForm):
             'salary': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Заработная плата'}),
             'contact_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Контактный адрес почты'}),
             'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Место поиска'}),
-            'description': forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Описание для вакансии'}),
             'employment_type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Тип занятости'}),
+            'work_exp': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Требуемый опыт работы'}),
+            'description': forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Описание для вакансии'}),
         }
 
     def __init__(self, *args, **kwargs):

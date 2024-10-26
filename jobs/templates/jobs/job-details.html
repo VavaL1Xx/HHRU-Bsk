@@ -1,48 +1,131 @@
 {% extends 'users/base.html' %}
 {% load static %}
 
-{% block title %}Вакансия {{ job.title }}{% endblock %}
+{% block title %}Вакансия | {{ job.title }}{% endblock %}
 
 {% block content %}
 <div class="container white-background" style="box-shadow: none; border-radius: 0;padding: 0;">
-    <div style="display: flex;justify-content: space-around;">
+    <div style="display: flex;justify-content: space-between;">
         <div class="job-details">
             <div class="job-content vacancy-item" style="text-align:center;">
-                <h1 class="job-title">{{ job.title }}</h1>
-                <p class="job-salary">Зарплата {{ job.salary }}</p>
-                <p style="text-align: left;">На данный момент откликнулось {{ job.resps }} человек</p>
-                <div style="display: flex;">
-                    <a class="btn learn-more" href="/jobs/create/feature/{{job.id}}"><i class="fi fi-ss-heart"></i></a>
-                    <a class="btn btn-invert close" href="/jobs/delete/job/{{job.id}}">Закрыть</a>
-                    <a class="btn btn-invert" href="/jobs/create/response/{{job.id }}">Откликнуться</a>
-                    <span class="btn btn-invert green-invert">Вы откликнулись</span>
+                <div style="justify-content: space-between;align-items: center;display: flex;margin-top: 12px;">
+                    <h1 class="job-title" style="font-size: 28px;margin-top: 0;">{{ job.title }}</h1>
+                    <div class="vacancy-side-info">
+                        <span style="display:flex;justify-content:end;gap: 8px;min-width: 25%;color:#a3a3a3;"><i class="fi fi-ss-land-layer-location"></i>{{job.location}}</span>
+                    </div>
+                </div>
+                <p class="job-salary" style="margin: 14px 0;">Зарплата: {{ job.salary }}</p>
+                <div class="job-info">
+                    <p class="job-info-item">Требуемый опыт работы: {{job.work_exp}}</p>
+                    <p class="job-info-item">Тип занятости: {{job.get_employment_type_display}}</p>
+                </div>
+                <p class="job-info-item" style="margin-top: 16px;">Сейчас эту вакансию смотрят: <span style="color:#ff5454;">{{ job.resps }} чел.</span></p>
+                <div class="job-btns-container">
+                    <div class="btns-block">
+
+                        {% if user.is_authenticated %}
+                            {% if is_featured %}
+                                <a class="btn learn-more angles red" href="/jobs/delete/feature/{{job.id}}"><i class="fi fi-ss-heart"></i></a>
+                                {% else %}    
+                                <a class="btn learn-more angles" href="/jobs/create/feature/{{job.id}}"><i class="fi fi-ss-heart"></i></a>
+                            {% endif %}
+                            {% if user_type == 'employer' and is_you %}
+                                <a class="btn btn-invert close angles red yellow-alt" href="/jobs/delete/job/{{job.id}}"><i class="fi fi-rr-trash"></i></a>
+                            {% endif %}
+                            {% if not is_you %}
+                                <a class="btn learn-more angles" href="#" style="display: flex;gap: 9px;"><i class="fi fi-ss-comment"></i><span>Перейти к чату</span></a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
         <div class="company-info vacancy-item">
-            <div class="vacancy-image" style="justify-content: start;">
-                {% if job.employer.user.profile_picture %}
-                  <img src="{{ job.employer.user.profile_picture.url }}" alt="Фото профиля">
-                {% else %}
-                  <img src="{% static 'users/images/user_avatar_default.png' %}" alt="Фото профиля">
-                {% endif %}
-            </div>
-            <p class="comp-name">{{ job.employer.company_name }}</p>
+            <a href="/users/view/company/{{job.employer.user.id}}">
+                <div class="vacancy-image" style="justify-content: start;">
+                    {% if job.employer.user.profile_picture %}
+                    <img src="{{ job.employer.user.profile_picture.url }}" alt="Фото профиля">
+                    {% else %}
+                    <img src="{% static 'users/images/user_avatar_default.png' %}" alt="Фото профиля">
+                    {% endif %}
+                </div>
+                <p class="comp-name">{{ job.employer.company_name }}</p>
+            </a>
             <p class="comp-rating">
-                <span>
-                    <i class="fi fi-ss-star"></i>
-                    <i class="fi fi-ss-star"></i>
-                    <i class="fi fi-ss-star"></i>
-                    <i class="fi fi-ss-star"></i>
-                    <i class="fi fi-ss-star"></i>
-                    <!-- <i class="fi fi-ts-star-sharp-half-stroke"></i>
-                    <i class="fi fi-rs-star"></i> -->
+                <span style="display: flex;gap: 4px;">
+                    <span class="star"></span>
+                    <span class="star"></span>
+                    <span class="star"></span>
+                    <span class="star"></span>
+                    <span class="star"></span>
                 </span>
-                <span style="font-size: 14px;display: flex;align-items: center;">
-                    Нет отзывов
-                </span>
+                <span id="reviews-quantity" style="font-size: 14px;display: flex;align-items: center;"></span>
+                <script>
+                    var companyRating = parseFloat('{{ job.employer.rating }}'.replace(',', '.'));
+                    var revCount = parseInt('{{ reviews_count }}');
+                    var stars = document.getElementsByClassName("star");
+                    count = document.getElementById("reviews-quantity");
+                    
+                    if (companyRating){
+                      count.textContent = `(${companyRating.toFixed(2)}) ${revCount} отз.`;
+                    }
+                    else {
+                      count.textContent = "Нет отзывов";
+                    }
+
+                    Array.from(stars).forEach((star, index) => {
+                        if (companyRating >= index + 1) {
+                            // Полная звезда
+                            star.innerHTML = `<i class="fi fi-ss-star" style="color: orange;"></i>`;
+                        } else if (companyRating > index && companyRating < index + 1) {
+                            // Половина звезды
+                            star.innerHTML += `<i class="fi fi-ss-star"></i>`;
+                            star.innerHTML += `<i class="fi fi-ss-star-sharp-half" style="color: orange;"></i>`;
+                        } else {
+                          // Пустая звезда
+                          star.innerHTML = `<i class="fi fi-ss-star"></i>`;
+                        }
+                    });
+                </script>
             </p>
             <p class="comp-address">{{ job.employer.company_address }}</p>
+        </div>
+    </div>
+
+    <div style="display: flex;justify-content: space-between;">
+        <div class="job-details">
+            <div class="job-content vacancy-item">
+                <div><h2 class="title" style="color: #555">Описание вакансии</h2></div>
+                <div>
+                    <p class="description" style="-webkit-line-clamp: unset;">
+                        {{ job.description }}
+                    </p>
+                </div>
+                <div class="job-btns-container">
+                    <div class="btns-block">
+                        <a class="btn learn-more angles" href="/users/view/company/{{job.employer.user.id}}"><i class="fi fi-rr-info"></i></a>
+                        <a class="btn learn-more angles" href="#">Показать контакты</a>
+                        {% if user_type == 'seeker' %}
+                            {% if responded %}
+                                <span class="btn btn-invert green-invert angles">Вы откликнулись</span>
+                            {% else %}    
+                                <a class="btn btn-invert angles" href="/jobs/create/response/{{job.id }}">Откликнуться</a>
+                            {% endif %}    
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="company-info vacancy-item">
+            <div style="font-size: 24px;font-weight: 600;color: #555;margin-bottom: 16px;">Требуемые навыки</div>
+            <div id="skills-{{job.id}}" style="display: flex;flex-wrap: wrap;gap: 12px;">
+                {% for skill in skills %}
+                    <span class="alt-info">{{skill.name}}</span>
+                {% endfor %}
+                {% if not skills %}
+                    <span class="alt-info">Нет навыков</span>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

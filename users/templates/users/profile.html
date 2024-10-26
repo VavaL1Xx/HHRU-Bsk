@@ -1,7 +1,7 @@
 {% extends 'users/base.html' %}
 {% load static %}
 {% block title %}
-  Профиль 
+  Профиль | 
   {% if user.user_type == 'employer' %}работодателя
   {% elif user.user_type == 'job_seeker' %}соискателя{% endif %}
 {% endblock %}
@@ -15,6 +15,10 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js');
 @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css');
 @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js');
+
+body{
+  background-color: #e2e8f0;
+}
 
 .form-control:focus {
     box-shadow: none;
@@ -98,7 +102,47 @@
                 <img class="rounded-circle mt-5" width="150px" src="{% static 'users/images/user_avatar_default.png' %}" alt="Фото профиля">
               {% endif %}
               <span class="font-weight-bold">{{user.username}}</span>
-              <span class="text-black-50">Время захода<br>{{user.last_login}}</span></div>
+              <span class="text-black-50">Время захода<br>{{user.last_login}}</span>
+              {% if user.user_type == 'employer' %}
+              <p class="comp-rating">
+                <span style="display: flex;gap: 4px;">
+                  <span class="star"></span>
+                  <span class="star"></span>
+                  <span class="star"></span>
+                  <span class="star"></span>
+                  <span class="star"></span>
+                </span>
+                <span id="reviews-quantity" style="font-size: 14px;display: flex;align-items: center;"></span>
+                <script>
+                  var companyRating = parseFloat('{{ employer.rating }}'.replace(',', '.'));
+                  var revCount = parseInt('{{reviews_count}}');
+                  var stars = document.getElementsByClassName("star");
+                  count = document.getElementById("reviews-quantity");
+                  
+                  if (companyRating){
+                    count.textContent = `(${companyRating.toFixed(2)}) ${revCount} отз.`;
+                  }
+                  else {
+                    count.textContent = "Нет отзывов";
+                  }
+
+                  Array.from(stars).forEach((star, index) => {
+                      if (companyRating >= index + 1) {
+                          // Полная звезда
+                          star.innerHTML = `<i class="fi fi-ss-star" style="color: orange;"></i>`;
+                      } else if (companyRating > index && companyRating < index + 1) {
+                          // Половина звезды
+                          star.innerHTML += `<i class="fi fi-ss-star"></i>`;
+                          star.innerHTML += `<i class="fi fi-ss-star-sharp-half" style="color: orange;"></i>`;
+                      } else {
+                        // Пустая звезда
+                        star.innerHTML = `<i class="fi fi-ss-star"></i>`;
+                      }
+                  });
+              </script>
+              </p>
+              {% endif %}
+            </div>
               {{user_form.profile_picture}}
               {% if user.user_type == 'seeker' %} 
                 <p class="description" style="margin-top: 32px;-webkit-line-clamp: unset;display: flex;gap: 16px;flex-wrap: wrap;">
@@ -106,7 +150,7 @@
                     <span class="alt-info">{{skill.name}}</span>
                   {% endfor %}
                 </p>
-              {% endif %}
+            {% endif %}
             </div>
             <div class="col-md-5 border-right">
               <div class="p-3 py-5">
@@ -159,7 +203,7 @@
                   </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" style="display: none;">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div><br>
                 <div class="col-md-12"><label class="labels">Experience in Designing</label><input type="text" class="form-control" placeholder="experience" value=""></div> <br>
