@@ -42,3 +42,11 @@ def home_view(request):
     context['user_type'] = request.session.get('user_type', 'seeker')
 
     return render(request, 'users/home.html', context)
+
+
+def main_view(request):
+    context = {
+        'user_type': request.session.get('user_type', 'seeker')
+    }
+        
+    return render(request, 'users/main.html', context)

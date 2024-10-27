@@ -16,19 +16,24 @@ from .serializers import EmployerSerializer, JobSeekerSerializer, UserSerializer
 from .models import JobSeeker, Employer, User, Review
 
 
-#------------------
-# Оставление отзыва
-#------------------
+#-----------------
+# Отзыв о компании
+#-----------------
 
 
 def company_review(request, pk):
-    context = {
-        'user_type': request.session.get('user_type'),
-    }
-    if not request.user.is_authenticated:
-        return redirect('home')
     
     employer = get_object_or_404(Employer, user__id=pk)
+    reviews = Review.objects.filter(employer=employer)
+    
+    context = {
+        'user_type': request.session.get('user_type'),
+        'reviews': reviews,
+        'reviews_count': reviews.count(),
+    }
+
+    if not request.user.is_authenticated:
+        return redirect('home')
 
     try:
         existing_review = Review.objects.get(employer=employer, user=request.user)
@@ -42,7 +47,6 @@ def company_review(request, pk):
             review.user = request.user
             review.employer = employer
             review.save()
-            reviews = Review.objects.filter(employer=employer)
             if reviews.exists():
                 avg_rating = reviews.aggregate(avg=Avg('rate'))['avg']
                 if avg_rating is not None:
@@ -65,7 +69,7 @@ def company_review(request, pk):
 def set_user_type(request, user_type):
     logout(request)
     request.session['user_type'] = user_type
-    return redirect('home')
+    return redirect('main')
 
 
 def employer_signup(request):

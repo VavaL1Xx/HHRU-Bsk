@@ -1,5 +1,5 @@
 {% extends 'users/base.html' %}
-
+{% load static %}
 {% block title %}Регистрация {% if user_type == 'employer' %}работодателя{% else %}соискателя{% endif %}{% endblock %}
 
 {% block additionals %}
@@ -48,7 +48,53 @@ input{
               <div class="card border-0 shadow rounded-3 my-5" style="border-radius: 24px;">
                 <div class="card-body p-4 p-sm-5" style="border-radius: 32px;">
                   <div class="md-5" style="text-align: center;margin-bottom: 2rem !important;">
-                      <h5 class="card-title text-center fw-light fs-5" style="font-size: 26px;">Оставить отзыв</h5>
+                  
+                    {% if employer.user.profile_picture %}
+                        <img class="rounded-circle" width="150px" src="{{ employer.user.profile_picture.url }}" alt="Фото профиля">
+                    {% else %}
+                        <img class="rounded-circle" width="150px" src="{% static 'users/images/user_avatar_default.png' %}" alt="Фото профиля">
+                    {% endif %}  
+                  
+                    <p class="comp-rating" style="justify-content: center;">
+                      <span style="display: flex;gap: 4px;">
+                          <span class="star"></span>
+                          <span class="star"></span>
+                          <span class="star"></span>
+                          <span class="star"></span>
+                          <span class="star"></span>
+                      </span>
+                      <span id="reviews-quantity" style="font-size: 14px;display: flex;align-items: center;"></span>
+                    </p>
+                    <script>
+                        var companyRating = parseFloat('{{ employer.rating }}'.replace(',', '.'));
+                        var revCount = parseInt('{{reviews_count}}');
+                        var stars = document.getElementsByClassName("star");
+                        count = document.getElementById("reviews-quantity");
+                        
+                        if (companyRating){
+                          count.textContent = `(${companyRating.toFixed(2)}) ${revCount} отз.`;
+                        }
+                        else {
+                          count.textContent = "Нет отзывов";
+                        }
+
+                        Array.from(stars).forEach((star, index) => {
+                            if (companyRating >= index + 1) {
+                                // Полная звезда
+                                star.innerHTML = `<i class="fi fi-ss-star" style="color: orange;"></i>`;
+                            } else if (companyRating > index && companyRating < index + 1) {
+                                // Половина звезды
+                                star.innerHTML += `<i class="fi fi-ss-star"></i>`;
+                                star.innerHTML += `<i class="fi fi-ss-star-sharp-half" style="color: orange;"></i>`;
+                            } else {
+                              // Пустая звезда
+                              star.innerHTML = `<i class="fi fi-ss-star"></i>`;
+                            }
+                        });
+                    </script>
+
+                    <h5 class="card-title text-center fw-light fs-5" style="font-size: 26px;">Оставить отзыв о {{ employer.company_name }}</h5>
+                  
                   </div>
                   <form method="POST">
                     {% csrf_token %}

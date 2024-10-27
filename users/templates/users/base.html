@@ -23,7 +23,6 @@
         <div class="container" style="margin-bottom: 0;margin-top: 0;padding-top: 0;padding-bottom: 0;">
             <nav class="top-panel">
                 <ul class="nav-links">
-                    <li><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
                     <li><a class="nav-link {% if user_type == 'seeker' %}sel{% endif %}" href="{% if not user_type == 'seeker' %}{% url 'set_user_type' 'seeker' %}{% endif %}" id="job-seeker-btn" href="#">Соискатель</a></li>
                     <li><a class="nav-link {% if user_type == 'employer' %}sel{% endif %}" href="{% if not user_type == 'employer' %}{% url 'set_user_type' 'employer' %}{% endif %}" id="employer-btn" href="#">Работодатель</a></li>
                     {% if user.is_authenticated %}
@@ -41,7 +40,7 @@
                     <div>
                         <img src="/static/users/images/hhrubsk-logo.png" style=" height: 64px;">
                     </div>
-                    <a class="sub-link" href="#">Главная</a>
+                    <a class="sub-link" href="{% url 'main' %}">Главная</a>
                     <a class="sub-link" href="{% url 'home' %}">Все вакансии</a>
                     {% if user.is_authenticated and user.user_type == 'employer' %}
                         <a class="sub-link" href="{% url 'responses_list_view' %}">Отклики</a>
@@ -79,7 +78,9 @@
     </main>
     
     <div class="footer">
-        &copy; 2024 HeadHunter. Все права защищены.
+        <div class="container">
+            &copy; 2024 HeadHunter. Все права защищены.
+        </div>
     </div>
     
     {% block bottom_additionals %}

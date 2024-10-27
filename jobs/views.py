@@ -2,6 +2,7 @@ import json
 
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 
@@ -9,6 +10,8 @@ from rest_framework.decorators import api_view
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import generics
+
+from users.forms import EmployerSignUpForm
 
 from .forms import JobForm
 from .serializers import JobSerializer, ResponseSerializer, FeatureSerializer, SkillsSerializer
@@ -25,23 +28,38 @@ def create_job(request):
         if request.method == 'POST':
             form = JobForm(request.POST)
             if form.is_valid():
-                # print(request.POST)
                 job = form.save(commit=False)
                 job.employer = request.user.employer_profile
                 job.save()
                 form.save_m2m()
-                # print(job.skills.all())
                 return redirect('home')
         else:
             form = JobForm()
         return render(request, 'jobs/job-creation.html', {'form': form})
-    return redirect('home')
+  
+    context = {
+        'user_type': request.session.get('user_type'),
+    }
+    
+    if request.method == 'POST':
+        form = EmployerSignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = EmployerSignUpForm()
+
+    context['form'] = form
+    return render(request, 'users/register.html', context)
+
 
 def delete_job(request, job_id):
     if request.user.is_authenticated and request.user.user_type == 'employer':
         job = get_object_or_404(Job, id=job_id, employer=request.user.employer_profile)
         job.delete()
     return redirect('home')
+
 
 def job_detail_view(request, job_id):
     job = get_object_or_404(Job, id=job_id)

@@ -19,10 +19,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from manager.views import home_view
+from manager.views import *
 
 urlpatterns = [
-    path('', home_view, name='home'),
+    path('', main_view, name='main'),
+    path('vacancies/', home_view, name='home'),
     path('admin/', admin.site.urls),
     
     # Приложение Users
