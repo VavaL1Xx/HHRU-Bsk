@@ -126,9 +126,11 @@ body{
                           });
                       </script>
                     </div>
+                    {% if user.is_authenticated and user is not employer.user %}
                     <div class="mt-3">
                       <a class="btn btn-primary profile-button" href="/users/review/{{employer.user.id}}/">Оставить отзыв</a>
                     </div>
+                    {% endif %}
                   </div>
                 </div>
               </div>

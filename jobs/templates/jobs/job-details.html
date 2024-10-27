@@ -22,12 +22,11 @@
                 <p class="job-info-item" style="margin-top: 16px;">Сейчас эту вакансию смотрят: <span style="color:#ff5454;">{{ job.resps }} чел.</span></p>
                 <div class="job-btns-container">
                     <div class="btns-block">
-
                         {% if user.is_authenticated %}
                             {% if is_featured %}
                                 <a class="btn learn-more angles red" href="/jobs/delete/feature/{{job.id}}"><i class="fi fi-ss-heart"></i></a>
                                 {% else %}    
-                                <a class="btn learn-more angles" href="/jobs/create/feature/{{job.id}}"><i class="fi fi-ss-heart"></i></a>
+                                <a class="btn btn-invert angles" href="/jobs/create/feature/{{job.id}}"><i class="fi fi-ss-heart"></i></a>
                             {% endif %}
                             {% if user_type == 'employer' and is_you %}
                                 <a class="btn btn-invert close angles red yellow-alt" href="/jobs/delete/job/{{job.id}}"><i class="fi fi-rr-trash"></i></a>
@@ -36,6 +35,7 @@
                                 <a class="btn learn-more angles" href="#" style="display: flex;gap: 9px;"><i class="fi fi-ss-comment"></i><span>Перейти к чату</span></a>
                             {% endif %}
                         {% endif %}
+                        <a class="btn learn-more angles" href="#">Показать контакты</a>
                     </div>
                 </div>
             </div>
@@ -104,8 +104,7 @@
                 <div class="job-btns-container">
                     <div class="btns-block">
                         <a class="btn learn-more angles" href="/users/view/company/{{job.employer.user.id}}"><i class="fi fi-rr-info"></i></a>
-                        <a class="btn learn-more angles" href="#">Показать контакты</a>
-                        {% if user_type == 'seeker' %}
+                        {% if user.is_authenticated and user_type == 'seeker' %}
                             {% if responded %}
                                 <span class="btn btn-invert green-invert angles">Вы откликнулись</span>
                             {% else %}    

@@ -25,7 +25,7 @@ class JobForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Заголовок вакансии'}),
             'industry': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Выберите отрасль'}),
-            'skills': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Выберите навыки'}),
+            'skills': forms.SelectMultiple(attrs={'id':'multiSelect','name':'multiSelect', 'class': 'form-control', 'placeholder': 'Выберите навыки', 'data-coreui-search':'true',}),
             'salary': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Заработная плата'}),
             'contact_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Контактный адрес почты'}),
             'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Место поиска'}),

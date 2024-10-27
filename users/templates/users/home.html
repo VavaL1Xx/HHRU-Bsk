@@ -1,6 +1,6 @@
 {% extends 'users/base.html' %}
 {% load static %}
-{% block title %}HHRU-BSK | Работа вашей мечты{% endblock %}
+{% block title %}HHRU-BSK | Список вакансий{% endblock %}
 
 {% block additionals %}
 <script>
@@ -37,7 +37,7 @@
               <option value="{{city}}">{{city}}</option>
             {% endfor %}
         </select>
-        <button onclick="searchJobs('/jobs/api/jobs/search/')"><i class="fi fi-br-search"></i></button>
+        <button onclick="searchJobs('/jobs/api/jobs/search/')"><i class="fi fi-br-search" style="display: flex;font-style: normal;gap: 8px;font-weight: 600;">Найти</i></button>
     </div>
     </div>
 
