@@ -15,8 +15,10 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-straight/css/uicons-thin-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+    
     {% block additionals %}
     {% endblock %}
+    
 </head>
 <body>
     <header class="header-top">
@@ -42,9 +44,13 @@
                     </div>
                     <a class="sub-link" href="{% url 'main' %}">Главная</a>
                     <a class="sub-link" href="{% url 'home' %}">Все вакансии</a>
-                    {% if user.is_authenticated and user.user_type == 'employer' %}
-                        <a class="sub-link" href="{% url 'responses_list_view' %}">Отклики</a>
-                        <a class="sub-link" href="{% url 'create_job' %}">Создать вакансию</a>
+                    {% if user.is_authenticated and not user.is_superuser%}
+                        {% if user.user_type == 'employer' %}
+                            <a class="sub-link" href="{% url 'responses_list_view' %}">Отклики</a>
+                            <a class="sub-link" href="{% url 'create_job' %}">Создать вакансию</a>
+                        {% else %}
+                            <a class="sub-link" href="{% url 'my_resps' %}">Мои отклики</a>
+                        {% endif %}
                     {% endif %}
                     <span class="sub-link">Помощь</span>
                 </div>

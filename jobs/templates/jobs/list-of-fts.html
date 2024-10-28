@@ -10,11 +10,11 @@
   // console.log(isAuthenticated);
   const userId = parseInt("{{ user.id }}");
   // console.log(userId);
-  const userType = isAuthenticated ? "{{ user.user_type }}" : None;
+  const userType = isAuthenticated ? "{{ user.user_type }}" : null;
   // console.log(userType);
-  const featuredJobs = isAuthenticated ? JSON.parse("{{ featured_jobs }}") : None;
+  const featuredJobs = isAuthenticated ? JSON.parse("{{ featured_jobs }}") : null;
   // console.log(featuredJobs);
-  const respondedJobs = isAuthenticated ? JSON.parse("{{ responded_jobs }}") : None;
+  const respondedJobs = isAuthenticated ? JSON.parse("{{ responded_jobs }}") : null;
   // console.log(respondedJobs);
 </script>
 {% endblock %}

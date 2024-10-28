@@ -115,9 +115,18 @@ def response_create_view(request, job_id):
 def responses_list_view(request):
     if request.user.user_type == 'employer':
         resps = resp.objects.filter(job__employer=request.user.id)
+        resps = resp.objects.filter(job__employer=request.user.id)
         return render(request, 'jobs/list-of-resps.html', {'resps': resps})
     return redirect('home')
 
+
+@login_required
+def my_resps_view(request):
+    print(request.user.user_type)
+    if request.user.user_type == 'seeker':
+        resps = resp.objects.filter(job_seeker__user=request.user)
+        return render(request, 'jobs/myresps.html', {'resps': resps})
+    return redirect('home')
 
 # ------------------
 # Избранные вакансии

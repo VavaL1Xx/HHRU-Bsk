@@ -2,8 +2,11 @@
 {% load static %}
 {% block title %}
   Профиль | 
-  {% if user.user_type == 'employer' %}работодателя
-  {% elif user.user_type == 'job_seeker' %}соискателя{% endif %}
+  {% if user.user_type == 'employer' %}
+  Работодателя
+  {% elif user.user_type == 'seeker' %}
+  Соискателя
+  {% endif %}
 {% endblock %}
 
 {% block additionals %}
@@ -18,6 +21,10 @@
 
 body{
   background-color: #e2e8f0;
+}
+
+#id_profile_picture{
+  text-align-last: center;
 }
 
 .form-control:focus {
@@ -145,7 +152,7 @@ body{
             </div>
               {{user_form.profile_picture}}
               {% if user.user_type == 'seeker' %} 
-                <p class="description" style="margin-top: 32px;-webkit-line-clamp: unset;display: flex;gap: 16px;flex-wrap: wrap;">
+                <p class="description" style="justify-content: center;margin-top: 32px;-webkit-line-clamp: unset;display: flex;gap: 16px;flex-wrap: wrap;">
                   {% for skill in skills %}
                     <span class="alt-info">{{skill.name}}</span>
                   {% endfor %}

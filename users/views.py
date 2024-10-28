@@ -146,7 +146,7 @@ def profile_view(request):
     user_form = UserProfileForm(request.POST or None, request.FILES or None, instance=user)
     seeker_form = SeekerProfileForm(request.POST or None, instance=user.jobseeker_profile) if hasattr(user, 'jobseeker_profile') else None
     employer_form = EmployerProfileForm(request.POST or None, instance=user.employer_profile) if hasattr(user, 'employer_profile') else None
-    employer = get_object_or_404(Employer, user=request.user)
+    employer = get_object_or_404(Employer, user=request.user) if hasattr(user, 'employer_profile') else None
 
     context = {
         'user_type': request.session.get('user_type'),
@@ -154,7 +154,7 @@ def profile_view(request):
         'seeker_form': seeker_form,
         'employer_form': employer_form,
         'employer': employer,
-        'reviews_count': Review.objects.filter(employer=employer).count(),
+        'reviews_count': Review.objects.filter(employer=employer).count() if hasattr(user, 'employer_profile') else None,
     }
 
     if user.user_type == User.USER_TYPE_CHOICES[1][0]:
@@ -171,7 +171,7 @@ def profile_view(request):
             user_form.save()
             if seeker_form:
                 seeker_form.save()
-            if employer_form:
+            elif employer_form:
                 employer_form.save()
             return redirect('profile')
 

@@ -84,15 +84,14 @@ function renderVac(job, vacancyList) {
             </div>
             <div class="vacancy-side-info">
               <span style="display:flex;justify-content:end;width:100%;gap: 8px;"><i class="fi fi-ss-land-layer-location"></i>${job['location']}</span>
-              <span style="text-align: right;">${job['resps']} откликов</span>
+              <span style="display: flex;align-items: center;justify-content: right;gap: 12px;">${job['resps']} откликов<div class="pulsing-dot green"></div></span>
             </div>
           </div>
           <p class="description" id="skills-${job['id']}" style="margin-bottom:0;display:flex;gap:12px;flex-wrap:wrap;"></p>
           <p class="salary">${job['salary']}</p>
           <p class="description">${job['description']}</p>
           <div class="job-btns-container">
-            <div class="btns-block" id="btns-block-${job['id']}">
-            </div>
+            <div class="btns-block" id="btns-block-${job['id']}"></div>
           </div>
         </div>
     `;
@@ -113,11 +112,15 @@ function renderVac(job, vacancyList) {
 
   if (!isSuper && isAuthenticated) {
     if (featuredJobs && !featuredJobs.includes(job['id'])) {
-      btns_lst.innerHTML += `<a class="btn learn-more" href="/jobs/create/feature/${job['id']}"><i class="fi fi-ss-heart"></i></a>`
+      btns_lst.innerHTML += `<a class="btn btn-invert" href="/jobs/create/feature/${job['id']}"><i class="fi fi-ss-heart"></i></a>`
     }
     else {
       btns_lst.innerHTML += `<a class="btn learn-more red" href="/jobs/delete/feature/${job['id']}"><i class="fi fi-ss-heart"></i></a>`
     }
+  }
+
+  if (userType == 'employer' && userId == job['employer']['user']['id']) {
+    btns_lst.innerHTML += `<a class="btn btn-invert close red yellow-alt" href="/jobs/delete/job/${job['id']}"><i class="fi fi-rr-trash"></i></a>`
   }
 
   btns_lst.innerHTML += `<a class="btn learn-more" href="/jobs/view/job/${job['id']}">Подробнее</a>`
@@ -130,9 +133,6 @@ function renderVac(job, vacancyList) {
       else {
         btns_lst.innerHTML += `<a class="btn btn-invert" href="/jobs/create/response/${job['id']}">Откликнуться</a>`
       }
-    }
-    if (userType == 'employer' && userId == job['employer']['user']['id']) {
-      btns_lst.innerHTML += `<a class="btn btn-invert close" href="/jobs/delete/job/${job['id']}">Закрыть</a>`
     }
   }
 }
