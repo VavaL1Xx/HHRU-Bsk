@@ -19,10 +19,10 @@
     .modal-content {
         background-color: white;
         margin: 15% auto;
-        padding: 20px;
+        padding: 32px 20px;
         border-radius: 10px;
         width: 80%;
-        max-width: 600px;
+        max-width: 384px;
     }
 
     .close {
@@ -81,12 +81,27 @@
                         <a class="btn learn-more angles" href="#" onclick="openModal()">Показать контакты</a>
                     </div>
                     <div id="modal" class="modal">
-                        <div class="modal-content">
-                            <span class="close" onclick="closeModal();">&times;</span>
-                            <h2>Контакты</h2>
-                            <p>Почта для связи:{{ job.contact_email }}</p>
-                            <p>Почта компании:{{ job.employer.user.email }}</p>
-                            <p>Телефон компании:{{ job.employer.user.phone_number }}</p>
+                        <div class="modal-content" style="position: relative;">
+                            <span class="close" onclick="closeModal();" style="position: absolute;top: 24px;right: 24px;">&times;</span>
+                            <div>
+                                <div class="vacancy-image" style="justify-content: center;margin: 0;">
+                                    {% if job.employer.user.profile_picture %}
+                                    <img src="{{ job.employer.user.profile_picture.url }}" alt="Фото профиля">
+                                    {% else %}
+                                    <img src="{% static 'users/images/user_avatar_default.png' %}" alt="Фото профиля">
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <h2 style="color: #555;">Компания {{job.employer.company_name}}<br>Связаться с нами</h2>
+                                    <div style="display: flex;justify-content: center;">
+                                        <div>
+                                            <p style="display: flex;gap: 4px;justify-content: center;"><i style="display: flex;" class="fi fi-br-envelope"></i> {{ job.employer.user.email }}</p>
+                                            <p style="display: flex;gap: 4px;justify-content: center;"><i style="display: flex;" class="fi fi-rr-phone-flip"></i> {{ job.employer.user.phone_number }}</p>
+                                            <a class="btn learn-more angles" href="#" style="display: flex;gap: 9px;justify-content: space-evenly;margin-top: 32px;"><i class="fi fi-ss-comment"></i><span>Перейти к чату</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <script>
@@ -165,7 +180,7 @@
     <div style="display: flex;justify-content: space-between;">
         <div class="job-details">
             <div class="job-content vacancy-item">
-                <div><h2 class="title" style="color: #555">Описание вакансии</h2></div>
+                <div><h2 class="title" style="color: #555; font-weight: 600;">Описание вакансии</h2></div>
                 <div>
                     <p class="description" style="-webkit-line-clamp: unset;">
                         {{ job.description }}

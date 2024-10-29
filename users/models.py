@@ -39,7 +39,7 @@ class JobSeeker(models.Model):
     full_name = models.CharField(verbose_name="ФИО", max_length=255)
     # skills = models.TextField(verbose_name="Навыки", blank=True, null=True)
     skills = models.ManyToManyField(Skill, related_name='users', blank=False)
-    education = models.CharField(max_length=255, verbose_name="Образование", blank=True, null=True)
+    education = models.CharField(max_length=255, verbose_name="Образование")
     experience = models.TextField(verbose_name="Опыт работы", blank=True, null=True)
     
     desired_job_type = models.CharField(max_length=255, verbose_name="Желаемая категория работы", blank=True, null=True)
@@ -47,7 +47,7 @@ class JobSeeker(models.Model):
     desired_location = models.CharField(max_length=100, verbose_name="Желаемое место работы", blank=True, null=True)
     
     portfolio_link = models.URLField(verbose_name="Ссылка на портфолио", blank=True, null=True)
-    languages = models.TextField(verbose_name="Владеемые языки", blank=True, null=True)
+    languages = models.TextField(verbose_name="Языки во владении", blank=True, null=True)
     interests = models.TextField(verbose_name="Интересы", blank=True, null=True)
 
     def __str__(self):

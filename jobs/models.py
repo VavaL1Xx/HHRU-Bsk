@@ -51,10 +51,7 @@ class Response(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='responses')
     job_seeker = models.ForeignKey(JobSeeker, on_delete=models.CASCADE, related_name='seeker')
     date_of_response = models.DateTimeField(verbose_name='Дата отклика', auto_now_add=True)
-    
-    cover_letter = models.TextField(verbose_name="Сопроводительное письмо", blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    employer_feedback = models.TextField(verbose_name="Обратная связь", blank=True, null=True)
 
     class Meta:
         unique_together = ('job', 'job_seeker')

@@ -264,7 +264,16 @@ class JobListView(generics.ListAPIView):
 
 @api_view(['GET'])
 def search_jobs(request):
-    query = request.GET.get('q', '')
+
+    query = request.GET.get('query')
+    if query:
+        jobs = jobs.filter(
+            Q(title__icontains=query) | Q(description__icontains=query) | Q(employer__company_name__icontains=query)
+        )
+        
+    else:
+        query = request.GET.get('q', '')
+    
     industry = request.GET.get('industry', '')
     city = request.GET.get('city', '')
 
@@ -277,6 +286,7 @@ def search_jobs(request):
         jobs = jobs.filter(location__iexact=city)
 
     serializer = JobSerializer(jobs, many=True)
+    redirect('home')
     return Response(serializer.data)
 
 

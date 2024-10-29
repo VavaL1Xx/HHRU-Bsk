@@ -20,8 +20,10 @@ urlpatterns = [
     # URL для Django
 
     path('set_user_type/<str:user_type>/', views.set_user_type, name='set_user_type'),
-    path('view/company/<int:pk>/', views.company_profile, name='company_profile'),
     path('review/<int:pk>/', views.company_review, name='company_review'),
+    
+    path('view/company/<int:pk>/', views.company_profile, name='company_profile'),
+    path('view/seeker/<int:pk>/', views.seeker_profile, name='seeker_profile'),
 
     path('signup/employer/', views.employer_signup, name='employer_signup'),
     path('signup/seeker/', views.job_seeker_signup, name='job_seeker_signup'),

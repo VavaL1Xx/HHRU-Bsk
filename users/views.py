@@ -14,6 +14,7 @@ from jobs.models import Job
 from .forms import UserReviewForm, EmployerSignUpForm, JobSeekerSignUpForm, UserProfileForm, SeekerProfileForm, EmployerProfileForm, UserLoginForm
 from .serializers import EmployerSerializer, JobSeekerSerializer, UserSerializer
 from .models import JobSeeker, Employer, User, Review
+from jobs.models import Response as resp
 
 
 #-----------------
@@ -119,12 +120,14 @@ def login_view(request):
     if request.method == 'POST':
         form = UserLoginForm(request, data=request.POST)
         if form.is_valid():
+            print(1)
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
                 context['user_type'] = request.user.user_type
+                print(context['user_type'])
                 return redirect('home')
             else:
                 form.add_error(None, 'Неверное имя пользователя или пароль.')
@@ -181,6 +184,7 @@ def profile_view(request):
 
 def logout_view(request):
     logout(request)
+    request.session['user_type'] = 'seeker'
     return redirect('/')
 
 
@@ -198,6 +202,21 @@ def company_profile(request, pk):
     context['jobs_count'] = jobs.count()
 
     return render(request, 'users/company-profile.html', context)
+
+
+def seeker_profile(request, pk):
+    context = {
+        'user_type': request.session.get('user_type'),
+    }
+    seeker = get_object_or_404(Employer, pk=pk)
+    resps = resp.objects.filter(job_seeker=seeker)
+    
+    context['seeker'] = seeker
+    context['resps'] = resps
+    context['resps_count'] = resps.count()
+
+    return render(request, 'users/seeker-profile.html', context)
+
 
 # -------------
 # Views для API

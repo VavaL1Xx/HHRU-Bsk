@@ -67,6 +67,7 @@ function renderVacancies(data = [], extract = false) {
 }
 
 function renderVac(job, vacancyList) {
+  console.log(job);
   const profilePicture = job['employer']['user']['profile_picture'] || "/static/users/images/user_avatar_default.png";
   const jobElement = document.createElement('li');
   jobElement.innerHTML = `

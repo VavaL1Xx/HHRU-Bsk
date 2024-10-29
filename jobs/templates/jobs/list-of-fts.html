@@ -25,19 +25,7 @@
       <div class="logo" id="vacancy-count"></div>
       <div class="search-bar">
         <input id="search-input" type="text" placeholder="Поиск вакансий...">
-        <select id="industry-filter">
-          <option value="">Все отрасли</option>
-          {% for industry in industries %}
-            <option value="{{industry}}">{{industry}}</option>
-          {% endfor %}
-      </select>
-      <select id="city-filter">
-          <option value="">Все города</option>
-          {% for city in cities %}
-            <option value="{{city}}">{{city}}</option>
-          {% endfor %}
-      </select>
-        <button onclick="searchJobs(`/jobs/api/features/${userId}/search/`, true)"><i class="fi fi-br-search" style="display: flex;font-style: normal;gap: 8px;font-weight: 600;">Найти</i></button>
+        <button onclick="searchJobs(`/jobs/api/features/${userId}/search/`, true, null, `${industry.value}`, `${city.value}`)"><i class="fi fi-br-search" style="display: flex;font-style: normal;gap: 8px;font-weight: 600;">Найти</i></button>
     </div>
     </div>
 
@@ -45,25 +33,27 @@
       <p id="search-results"></p>
       <div style="display: flex;">
         <div class="sidebar">
-          <h3>Поиск по отраслям</h3>
-          <ul>
-            <li><a href="#">IT</a></li>
-            <li><a href="#">Продажи</a></li>
-            <li><a href="#">Маркетинг</a></li>
-            <li><a href="#">Финансы</a></li>
-            <li><a href="#">HR</a></li>
-            <!-- ... другие отрасли ... -->
-          </ul>
+          
+          <div class="top-panel-side">
+            <h3>Поиск по отраслям</h3>
+            <select id="industry-filter">
+              <option value="">Все отрасли</option>
+              {% for industry in industries %}
+              <option value="{{industry}}">{{industry}}</option>
+              {% endfor %}
+            </select>
+          </div>
 
-          <h3>Поиск по городам</h3>
-          <ul>
-            <li><a href="#">Москва</a></li>
-            <li><a href="#">Санкт-Петербург</a></li>
-            <li><a href="#">Екатеринбург</a></li>
-            <li><a href="#">Новосибирск</a></li>
-            <li><a href="#">Красноярск</a></li>
-            <!-- ... другие города ... -->
-          </ul>
+          <div class="bottom-panel-side">
+            <h3>Поиск по городам</h3>
+            <select id="city-filter">
+              <option value="">Все города</option>
+              {% for city in cities %}
+              <option value="{{city}}">{{city}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
         </div>
         <div class="vacancy-list" id="vacancy-list">
           <ul id="vacancy-list-ul">
@@ -71,17 +61,30 @@
         </div>
       </div>
   </div>
+
 {% endblock %}
 
 {% block bottom_additionals %}
 <script src="{% static 'users/js/schedule.js' %}"></script>
 <script src="{% static 'users/js/search.js' %}"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', loadAllData(`/jobs/api/features/${userId}/`, true));
+  const industry = document.getElementById('industry-filter');
+  industry.addEventListener("change", function(){
+    searchJobs(`/jobs/api/features/${userId}/search/`, true, null, `${industry.value}`, `${city.value}`)
+  });
+
+  const city = document.getElementById('city-filter');
+  city.addEventListener("change", function(){
+    searchJobs(`/jobs/api/features/${userId}/search/`, true, null, `${industry.value}`, `${city.value}`)
+  });
+
   document.getElementById('search-input').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
-        searchJobs(`/jobs/api/features/${userId}/search/`, true);
+        searchJobs(`/jobs/api/features/${userId}/search/`, true, null, `${industry.value}`, `${city.value}`);
     }
-});
+  });
+
+  document.addEventListener('DOMContentLoaded', loadAllData(`/jobs/api/features/${userId}/`, true));
+
 </script>
 {% endblock %}

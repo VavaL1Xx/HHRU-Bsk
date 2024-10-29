@@ -61,6 +61,13 @@ body {
                   </div>
                   <form method="POST">
                     {% csrf_token %}
+                    {% if form.errors %}
+                        <div class="text-danger">
+                            {% for error in form.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                     <div class="form-floating mb-3">
                         <label class="labels">Логин</label>
                         {{ form.username }}

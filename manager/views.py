@@ -1,6 +1,7 @@
 import json
 
 from django.shortcuts import render
+from django.db.models import Q
 
 from jobs.models import Job, Response, Feature
 
@@ -40,6 +41,7 @@ def home_view(request):
     context['cities'] = cities
     context['industries'] = industries
     context['user_type'] = request.session.get('user_type', 'seeker')
+    context['query'] = request.GET.get('query')
 
     return render(request, 'users/home.html', context)
 

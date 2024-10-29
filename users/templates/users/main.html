@@ -35,15 +35,15 @@
                 </div>
             {% else %}
                 <h1 style="font-family: 'Helvetica';font-size: 32px;font-weight: 600;color: #fff;line-height: 100%;margin-bottom: 18px;text-align: left;">Работа найдётся для каждого</h1>
-                <form action="">
+                <form action="{% url 'home' %}" method="GET">
                     <div style="display: flex;gap: 20px;justify-content: center;">
                         <div style="display: flex;background: #fff;padding: 0 18px;width: 384px;gap: 12px;border-radius: 1rem;">
                             <div style="align-items: center;display: flex;">
                                 <i class="fi fi-rs-search" style="display: flex;color: gray;font-size: 24px;"></i>
                             </div>
-                            <input id="search-input" type="text" placeholder="Профессия, должность или компания" style="border: 0;width: 100%;font-size: 16px;outline: none;">
+                            <input id="search-input" name="query" type="text" placeholder="Профессия, должность или компания" style="border: 0;width: 100%;font-size: 16px;outline: none;">
                         </div>
-                        <input class="btn learn-more" style="padding: 16px 32px;margin: 0;border-radius: 1rem;" type="submit" onclick='window.open(`{% url "home" %}`);searchJobs("/jobs/api/jobs/search/")' value="Найти">
+                        <button class="btn learn-more" style="padding: 16px 32px;margin: 0;border-radius: 1rem;" type="submit">Найти</button>
                     </div>
                     <div style="margin-top: 18px;font-size: 18px;">
                         <a href="{% url 'set_user_type' 'employer' %}" style="color: #fff;max-width: 488px;text-align: center;">Я ищу сотрудника</a>

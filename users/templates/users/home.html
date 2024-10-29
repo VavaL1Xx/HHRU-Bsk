@@ -12,10 +12,12 @@
   // console.log(userId);
   const userType = isAuthenticated ? "{{ user.user_type }}" : null;
   // console.log(userType);
-  const featuredJobs = isAuthenticated ? JSON.parse("{{ featured_jobs }}") : null;
+  const featuredJobs = isAuthenticated ? JSON.parse("{{ featured_jobs|default:'[]' }}") : null;
   // console.log(featuredJobs);
-  const respondedJobs = isAuthenticated ? JSON.parse("{{ responded_jobs }}") : null;
+  const respondedJobs = isAuthenticated ? JSON.parse("{{ responded_jobs|default:'[]' }}") : null;
   // console.log(respondedJobs);
+  const query = "{{ query|default:'' }}";
+  console.log(query);
 </script>
 
 <style>
@@ -62,8 +64,8 @@
     <div class="header" style="padding: 0;">
       <div class="logo" id="vacancy-count"></div>
       <div class="search-bar">
-        <input id="search-input" type="text" placeholder="Поиск вакансий...">
-        <select id="industry-filter">
+        <input id="search-input" type="text" value="{{ query|default:'' }}" placeholder="Поиск вакансий...">
+        <!-- <select id="industry-filter">
             <option value="">Все отрасли</option>
             {% for industry in industries %}
               <option value="{{industry}}">{{industry}}</option>
@@ -74,7 +76,7 @@
             {% for city in cities %}
               <option value="{{city}}">{{city}}</option>
             {% endfor %}
-        </select>
+        </select> -->
         <button onclick="searchJobs('/jobs/api/jobs/search/')"><i class="fi fi-br-search" style="display: flex;font-style: normal;gap: 8px;font-weight: 600;">Найти</i></button>
     </div>
     </div>
@@ -83,25 +85,36 @@
       <p id="search-results"></p>
       <div style="display: flex;">
         <div class="sidebar">
-          <h3>Поиск по отраслям</h3>
-          <ul>
-            <li><a href="#">IT</a></li>
-            <li><a href="#">Продажи</a></li>
-            <li><a href="#">Маркетинг</a></li>
-            <li><a href="#">Финансы</a></li>
-            <li><a href="#">HR</a></li>
-            <!-- ... другие отрасли ... -->
-          </ul>
+          
+          <div class="top-panel-side">
+            <h3>Поиск по отраслям</h3>
+            <select id="industry-filter">
+              <option value="">Все отрасли</option>
+              {% for industry in industries %}
+              <option value="{{industry}}">{{industry}}</option>
+              {% endfor %}
+            </select>
+          </div>
 
-          <h3>Поиск по городам</h3>
-          <ul>
-            <li><a href="#">Москва</a></li>
-            <li><a href="#">Санкт-Петербург</a></li>
-            <li><a href="#">Екатеринбург</a></li>
-            <li><a href="#">Новосибирск</a></li>
-            <li><a href="#">Красноярск</a></li>
-            <!-- ... другие города ... -->
-          </ul>
+          <div class="bottom-panel-side">
+            <h3>Поиск по городам</h3>
+            <select id="city-filter">
+              <option value="">Все города</option>
+              {% for city in cities %}
+              <option value="{{city}}">{{city}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- <div class="bottom-panel-side">
+            <h3>Сортировка</h3>
+            <select id="order-filter">
+              <option value="">Тип сортировки</option>
+              <option value="incr">По возрастанию</option>
+              <option value="decr">По убыванию</option>
+            </select>
+          </div> -->
+
         </div>
         <div class="vacancy-list" id="vacancy-list">
           <ul id="vacancy-list-ul">
@@ -116,11 +129,26 @@
 <script src="{% static 'users/js/schedule.js' %}"></script>
 <script src="{% static 'users/js/search.js' %}"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', loadAllData('/jobs/api/jobs/all/'));
   document.getElementById('search-input').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
-        searchJobs('/jobs/api/jobs/search/');
+      searchJobs('/jobs/api/jobs/search/');
     }
-});
+  });
+  
+  const industry = document.getElementById('industry-filter');
+  industry.addEventListener("change", function(){
+    searchJobs('/jobs/api/jobs/search/', false, null, `${industry.value}`, `${city.value}`)
+  });
+
+  const city = document.getElementById('city-filter');
+  city.addEventListener("change", function(){
+    searchJobs('/jobs/api/jobs/search/', false, null, `${industry.value}`, `${city.value}`, )
+  });
+
+  if (query)
+    searchJobs('/jobs/api/jobs/search/', false, query);
+  else{
+    document.addEventListener('DOMContentLoaded', loadAllData('/jobs/api/jobs/all/'));
+  }
 </script>
 {% endblock %}
