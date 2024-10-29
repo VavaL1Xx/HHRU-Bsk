@@ -45,8 +45,12 @@ def home_view(request):
 
 
 def main_view(request):
+    tp = request.session.get('user_type', 'seeker')
     context = {
-        'user_type': request.session.get('user_type', 'seeker')
+        'user_type': tp,
     }
-        
+    
+    if request.user.is_authenticated and request.user.user_type != tp:
+        request.session['user_type'] = request.user.user_type
+
     return render(request, 'users/main.html', context)

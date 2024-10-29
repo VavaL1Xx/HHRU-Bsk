@@ -32,6 +32,9 @@ urlpatterns = [
     
     path('create/response/<int:job_id>/', views.response_create_view, name='job_response_view'),
     
+    path('resp/accept/<int:response_id>/', views.accept_resp, name="accept_resp"),
+    path('resp/reject/<int:response_id>/', views.reject_resp, name="reject_resp"),
+    
     path('create/feature/<int:job_id>/', views.feature_create_view, name='job_feature_view'),
     path('delete/feature/<int:job_id>/', views.feature_delete, name='feature_delete_view'),
 ]

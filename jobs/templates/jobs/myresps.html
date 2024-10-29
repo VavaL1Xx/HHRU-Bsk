@@ -7,19 +7,6 @@
 
 {% block content %}
 <div class="container">
-    <form action="" style="display: flex;justify-content: center;">
-        <div style="width: 65%;">
-            <div style="display: flex;gap: 20px;justify-content: center;">
-                <div style="display: flex;background: #fff;padding: 0 18px;width: 384px;gap: 12px;border-radius: 1rem;">
-                    <div style="align-items: center;display: flex;">
-                        <i class="fi fi-rs-search" style="display: flex;color: gray;font-size: 24px;"></i>
-                    </div>
-                    <input id="search-input" type="text" placeholder="Профессия, должность или компания" style="border: 0;width: 100%;font-size: 16px;outline: none;">
-                </div>
-                <input class="btn learn-more" style="padding: 16px 32px;margin: 0;border-radius: 1rem;" type="submit" onclick="window.open(`/vacancies/`);searchJobs()" value="Найти">
-            </div>
-        </div>
-    </form>
   <div class="vacancy-list" id="vacancy-list">
     {% if not resps %}
     <div class="vacancy-item empty-list">

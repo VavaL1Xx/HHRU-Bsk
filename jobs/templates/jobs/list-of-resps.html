@@ -15,8 +15,8 @@
     {% else %}
     <ul>
       {% for resp in resps %}
-      <li>
-        <div class="vacancy-item">
+      <li style="display:flex;justify-content:center;">
+        <div class="vacancy-item" style="width:65%;">
           <div class="vacancy-main-info">
             <div class="main-side">
               <div class="vacancy-image">
@@ -28,21 +28,29 @@
                 </div>
                 <div>
                   <p class="item-date">{{ resp.date_of_response }}</p>
-                  <h4>{{ resp.job.title }}</h4>
+                  {% comment %} <h4>{{ resp.job.title }}</h4> {% endcomment %}
                   <p class="company">{{ resp.job_seeker.full_name }}</p>
                 </div>
             </div>
             <div class="vacancy-side-info">
-            </div>
+              <span style="display: flex;align-items: center;justify-content: right;gap: 12px;font-size: 18px;">
+                  {{resp.get_status_display }}
+                  {% if resp.status == 'pending' %}
+                  <div class="pulsing-dot blue"></div>
+                  {% elif resp.status == 'accepted' %}
+                  <i style="color: #1bba20;display: flex;align-items: center;" class="fi fi-ss-badge-check"></i>
+                  {% else %}
+                  <i style="color: #fa4747;display: flex;align-items: center;" class="fi fi-ss-cross-circle"></i>
+                  {% endif %}
+              </span>
           </div>
-          <p class="description">{{ resp.job_seeker.education }}</p>
-          <p class="description">{{ resp.job_seeker.experience }}</p>
+          </div>
           <div class="job-btns-container">
             <div class="btns-block">
-              <a class="btn learn-more" href="#"><i class="fi fi-ss-comment"></i></a>
-              <a class="btn learn-more" href="{% url 'job_detail_view' resp.job.id %}">Подробнее</a>
-              <a class="btn learn-more green" href="#" style="padding-inline: 14px;"><i class="fi fi-br-check"></i></a>
-              <a class="btn learn-more red" href="#" style="padding-inline: 14px;"><i class="fi fi-br-cross"></i></a>
+              <a class="btn btn-invert angles" style="display: flex;gap: 9px;" href="{% url 'job_detail_view' resp.job.id %}"><i class="fi fi-rr-info"></i><span>Подробнее</span></a>
+              <a class="btn learn-more angles" style="display: flex;gap: 9px;" href="#"><i class="fi fi-ss-comment"></i><span>Перейти к чату</span></a>
+              <a class="btn learn-more green angles" href="{% url 'accept_resp' resp.id %}" style="padding-inline: 14px;display:flex;font-size:20px;"><i class="fi fi-bs-badge-check"></i></a>
+              <a class="btn learn-more red angles" href="{% url 'reject_resp' resp.id %}" style="padding-inline: 14px;display:flex;font-size:20px;"><i class="fi fi-bs-cross-circle"></i></a>
             </div>
           </div>
         </div>

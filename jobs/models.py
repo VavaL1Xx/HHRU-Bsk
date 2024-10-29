@@ -46,7 +46,7 @@ class Job(models.Model):
 
 class Response(models.Model):
 
-    STATUS_CHOICES = [('pending', 'На рассмотрении'), ('accepted', 'Принят'), ('rejected', 'Отклонен')]
+    STATUS_CHOICES = [('pending', 'На рассмотрении'), ('accepted', 'Одобрено'), ('rejected', 'Отклонено')]
 
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='responses')
     job_seeker = models.ForeignKey(JobSeeker, on_delete=models.CASCADE, related_name='seeker')

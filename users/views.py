@@ -124,6 +124,7 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+                context['user_type'] = request.user.user_type
                 return redirect('home')
             else:
                 form.add_error(None, 'Неверное имя пользователя или пароль.')

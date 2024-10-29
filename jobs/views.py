@@ -112,6 +112,28 @@ def response_create_view(request, job_id):
 
 
 @login_required
+def accept_resp(request, response_id):
+    if request.user.user_type == 'employer':
+        res = get_object_or_404(resp, id=response_id)
+        if res.status == res.STATUS_CHOICES[0][0] and res.job.employer.user == request.user:
+            res.status = res.STATUS_CHOICES[1][0]
+            res.save()
+        return redirect('responses_list_view')
+    return redirect('home')
+
+
+@login_required
+def reject_resp(request, response_id):
+    if request.user.user_type == 'employer':
+        res = get_object_or_404(resp, id=response_id)
+        if res.status == res.STATUS_CHOICES[0][0] and res.job.employer.user == request.user:
+            res.status = res.STATUS_CHOICES[2][0]
+            res.save()
+        return redirect('responses_list_view')
+    return redirect('home')
+
+
+@login_required
 def responses_list_view(request):
     if request.user.user_type == 'employer':
         resps = resp.objects.filter(job__employer=request.user.id)

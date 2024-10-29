@@ -543,20 +543,20 @@ body {
 }
 
 .btn.green-invert{
-  border-color: #1bba20 !important;
-  color: #1bba20!important;
+  border-color: #1ef60e !important;
+  color: #1ef60e!important;
 }
 .btn.green-invert:hover{
-  background-color: #1bba20!important;
+  background-color: #1ef60e!important;
 }
 
 .btn.green{
-  border-color: #1bba20;
-  background-color: #1bba20;
+  border-color: #1ef60e;
+  background-color: #1ef60e;
 }
 
 .btn.green:hover{
-  color: #1bba20 !important;
+  color: #1ef60e !important;
 }
 
 .btn.red{
